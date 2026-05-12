@@ -1,0 +1,56 @@
+// prisma/schema.prisma
+// Compatible MySQL (WAMP) et PostgreSQL
+// Pour changer de base : modifier provider et DATABASE_URL dans .env
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  nom       String
+  createdAt DateTime @default(now())
+}
+
+model Livreur {
+  id         Int        @id @default(autoincrement())
+  nom        String
+  telephone  String
+  photo      String?
+  disponible Boolean    @default(true)
+  commandes  Commande[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Commande {
+  id          String   @id @default(cuid())
+  nomClient   String
+  telephone   String
+  adresse     String
+  localisation String?
+  produit     String
+  description String?  @db.Text
+  montant     String?
+  image       String?
+  statut      Statut   @default(EN_ATTENTE)
+  notes       String?  @db.Text
+  livreur     Livreur? @relation(fields: [livreurId], references: [id])
+  livreurId   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Statut {
+  EN_ATTENTE
+  EN_COURS
+  LIVRE
+  ANNULE
+}
