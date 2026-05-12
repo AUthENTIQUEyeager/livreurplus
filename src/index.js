@@ -18,7 +18,8 @@ if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 // ─── Middlewares ─────────────────────────────────────────────────────────────
 app.use(cors({
   origin: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
+    process.env.FRONTEND_URL || 'https://livreurplus.vercel.app',
+    'https://livreurplus.vercel.app',
     'http://localhost:5000',
     'http://127.0.0.1:5500',   // Live Server VSCode
     'null',                     // Fichiers HTML ouverts localement
