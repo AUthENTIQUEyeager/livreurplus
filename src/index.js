@@ -48,6 +48,27 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// SEED TEMPORAIRE — à supprimer après utilisation
+app.get('/api/seed-init', async (req, res) => {
+  const { PrismaClient } = require('@prisma/client');
+  const bcrypt = require('bcryptjs');
+  const prisma = new PrismaClient();
+  try {
+    await prisma.commande.deleteMany();
+    await prisma.livreur.deleteMany();
+    await prisma.admin.deleteMany();
+    const hash = await bcrypt.hash('admin123', 10);
+    await prisma.admin.create({ data: { email: 'admin@livreurplus.bf', password: hash, nom: 'Admin' } });
+    await prisma.livreur.createMany({ data: [
+      { nom: 'Ibrahim Sawadogo', telephone: '07 00 22 33 44' },
+      { nom: 'Seydou Ouédraogo', telephone: '07 11 22 33 44' },
+    ]});
+    res.json({ success: true, message: 'Seed OK' });
+  } catch(e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
 // ─── Toutes les autres routes → frontend SPA ─────────────────────────────────
 app.get('*', (req, res) => {
   const indexPath = path.join(__dirname, '../public/index.html');
