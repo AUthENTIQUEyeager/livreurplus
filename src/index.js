@@ -18,10 +18,10 @@ if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 // ─── Middlewares ─────────────────────────────────────────────────────────────
 app.use(cors({
   origin: [
-    process.env.FRONTEND_URL || 'https://livreurplus.vercel.app',
     'https://livreurplus.vercel.app',
+    'https://livreurplus-api.onrender.com',
     'http://localhost:5000',
-    'http://127.0.0.1:5500',   // Live Server VSCode
+    'http://127.0.0.1:5500',
     'null',                     // Fichiers HTML ouverts localement
   ],
   credentials: true,
@@ -65,7 +65,7 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Démarrage ───────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  🚀  LivreurPlus API démarrée');
   console.log(`  🌐  http://localhost:${PORT}`);
