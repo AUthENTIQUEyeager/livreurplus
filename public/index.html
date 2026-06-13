@@ -4,300 +4,503 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>LivreurPlus — Livraison rapide et sécurisée</title>
-<meta name="description" content="LivreurPlus - Service de livraison express au Togo."/>
+<meta name="description" content="LivreurPlus - Service de livraison express rapide, sécurisée et partout au Togo."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-/* ============================================================
-   LivreurPlus — Design System
-   ============================================================ */
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --orange:#ff6b00;--orange-d:#cc5500;--orange-bg:rgba(255,107,0,0.1);--orange-glow:rgba(255,107,0,0.15);
-  --black:#0f0f0f;--dark:#141414;--card:#1c1c1c;--card2:#232323;
-  --border:#2a2a2a;--border2:#333;
-  --text:#ffffff;--text2:#b0b0b0;--text3:#666;
-  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--yellow:#fbbf24;
-  --api:http://localhost:5000;
+  --orange:#FF6A00;
+  --orange-d:#e05a00;
+  --orange-light:#fff4ee;
+  --orange-mid:#ffe0cc;
+  --white:#ffffff;
+  --off:#f8f9fc;
+  --dark:#1A1A1A;
+  --dark2:#2d2d2d;
+  --text:#333333;
+  --text2:#666666;
+  --text3:#999999;
+  --border:#e8e8e8;
+  --border2:#d0d0d0;
+  --green:#16a34a;
+  --red:#dc2626;
+  --blue:#2563eb;
+  --shadow:0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
+  --shadow-orange:0 8px 32px rgba(255,106,0,0.25);
 }
-body{font-family:'Outfit',sans-serif;background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden;}
-h1,h2,h3,h4{font-family:'Barlow Condensed',sans-serif;letter-spacing:0.5px;}
-
-/* PAGES */
+body{font-family:'Nunito',sans-serif;background:var(--white);color:var(--text);min-height:100vh;overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'Barlow Condensed',sans-serif;letter-spacing:0.3px;}
 .page{display:none;min-height:100vh;}
 .page.active{display:block;}
 
-/* NAVBAR */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(15,15,15,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;cursor:pointer;display:flex;align-items:center;gap:4px;}
-.nav-logo .accent{color:var(--orange);}
-.nav-logo .dot{width:7px;height:7px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-.nav-links{display:flex;gap:28px;align-items:center;}
-.nav-link{color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;transition:color .2s;}
-.nav-link:hover,.nav-link.active{color:var(--text);}
-.nav-cta{background:var(--orange);color:#fff;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:background .2s;}
-.nav-cta:hover{background:var(--orange-d);}
-.page-bar{position:fixed;top:64px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),transparent);z-index:99;}
+/* ══════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:80px;padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 16px rgba(0,0,0,0.06);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.nav-logo-icon{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-logo-icon svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.5;}
+.nav-logo-texts{display:flex;flex-direction:column;line-height:1.1;}
+.nav-logo-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--dark);text-transform:uppercase;letter-spacing:1px;}
+.nav-logo-tag{font-size:10px;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;}
+.nav-links{display:flex;gap:36px;align-items:center;}
+.nav-link{color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;transition:color .2s;text-transform:uppercase;letter-spacing:.5px;}
+.nav-link:hover,.nav-link.active{color:var(--dark);}
+.nav-cta{
+  background:var(--orange);color:#fff;
+  padding:11px 24px;border-radius:50px;
+  font-size:13px;font-weight:800;cursor:pointer;border:none;
+  font-family:'Nunito',sans-serif;text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:var(--shadow-orange);transition:all .2s;
+}
+.nav-cta:hover{background:var(--orange-d);transform:translateY(-1px);}
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .2s;}
-.btn-primary{background:var(--orange);color:#fff;}
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  padding:80px 0 0;
+  background:#fff;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.hero-main{
+  flex:1;
+  display:grid;
+  grid-template-columns:45% 55%;
+  max-width:100%;
+  min-height:calc(100vh - 80px);
+}
+/* Colonne gauche */
+.hero-left{
+  padding:80px 5% 60px 7%;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--orange-light);border:1px solid var(--orange-mid);
+  border-radius:30px;padding:6px 16px;
+  font-size:12px;font-weight:800;color:var(--orange);
+  text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:28px;width:fit-content;
+}
+.hero-pill-dot{width:7px;height:7px;background:var(--orange);border-radius:50%;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(52px,6vw,78px);
+  font-weight:900;line-height:.95;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+.hero-title .black{color:var(--dark);}
+.hero-title .orange{color:var(--orange);}
+.hero-sub{
+  font-size:18px;color:var(--text2);
+  font-weight:600;line-height:1.6;
+  margin-bottom:36px;max-width:400px;
+}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:52px;}
+.btn-hero-primary{
+  background:var(--orange);color:#fff;
+  padding:14px 32px;border-radius:50px;
+  font-size:14px;font-weight:800;cursor:pointer;border:none;
+  font-family:'Nunito',sans-serif;text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:var(--shadow-orange);transition:all .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-hero-primary:hover{background:var(--orange-d);transform:translateY(-2px);}
+.btn-hero-secondary{
+  background:#fff;color:var(--orange);
+  padding:14px 32px;border-radius:50px;
+  font-size:14px;font-weight:800;cursor:pointer;
+  border:2px solid var(--orange);
+  font-family:'Nunito',sans-serif;text-transform:uppercase;letter-spacing:.5px;
+  transition:all .2s;display:flex;align-items:center;gap:8px;
+}
+.btn-hero-secondary:hover{background:var(--orange-light);}
+.hero-stats{display:flex;gap:36px;}
+.h-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--dark);}
+.h-stat-num span{color:var(--orange);}
+.h-stat-lbl{font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
+.h-stat-div{width:1px;background:var(--border);align-self:stretch;}
+
+/* Colonne droite - image */
+.hero-right{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#fff5ee 0%,#fff 60%);
+}
+.hero-right::before{
+  content:'';position:absolute;
+  top:-100px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(255,106,0,.08) 0%,transparent 70%);
+  border-radius:50%;
+}
+/* Image placeholder — remplacez hero-img par votre image de livreur */
+.hero-img-wrap{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.hero-img-wrap img{
+  height:95%;
+  width:auto;
+  object-fit:contain;
+  object-position:bottom center;
+  max-width:100%;
+  position:relative;z-index:1;
+}
+/* Fallback si pas d'image */
+.hero-img-placeholder{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;
+  color:var(--orange-mid);
+}
+.hero-img-placeholder svg{width:120px;height:120px;stroke:var(--orange-mid);fill:none;stroke-width:1;}
+.hero-img-placeholder p{font-size:13px;color:var(--text3);font-weight:600;}
+
+/* Badge flottant sur l'image */
+.hero-badge-float{
+  position:absolute;
+  background:#fff;border-radius:14px;
+  padding:12px 16px;
+  box-shadow:var(--shadow-lg);
+  display:flex;align-items:center;gap:10px;
+  z-index:5;
+}
+.hero-badge-float.top-left{top:10%;left:5%;}
+.hero-badge-float.bottom-right{bottom:28%;right:5%;}
+.hbf-icon{width:36px;height:36px;border-radius:10px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;}
+.hbf-icon svg{width:18px;height:18px;stroke:var(--orange);fill:none;stroke-width:2;}
+.hbf-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--dark);line-height:1;}
+.hbf-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
+
+/* Cartes flottantes bas du hero */
+.hero-cards{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;
+  background:#fff;
+  border-top:1px solid var(--border);
+  box-shadow:0 -4px 24px rgba(0,0,0,0.06);
+  position:relative;z-index:10;
+}
+.hero-card{
+  padding:28px 24px;
+  border-right:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:14px;
+  transition:background .2s;cursor:pointer;
+}
+.hero-card:last-child{border-right:none;}
+.hero-card:hover{background:var(--orange-light);}
+.hc-icon{width:44px;height:44px;border-radius:12px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.hc-icon svg{width:22px;height:22px;stroke:var(--orange);fill:none;stroke-width:2;}
+.hero-card:hover .hc-icon{background:var(--orange);}
+.hero-card:hover .hc-icon svg{stroke:#fff;}
+.hc-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--dark);text-transform:uppercase;margin-bottom:3px;}
+.hc-desc{font-size:12px;color:var(--text2);font-weight:600;}
+
+/* ══════════════════════════════════════
+   BUTTONS GÉNÉRAUX
+══════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;font-size:13px;font-weight:800;cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:all .2s;text-transform:uppercase;letter-spacing:.5px;}
+.btn-primary{background:var(--orange);color:#fff;box-shadow:var(--shadow-orange);}
 .btn-primary:hover{background:var(--orange-d);transform:translateY(-1px);}
-.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2);}
-.btn-outline:hover{border-color:var(--orange);color:var(--orange);}
-.btn-sm{padding:7px 14px;font-size:12px;}
-.btn-danger{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3);}
-.btn-success{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+.btn-outline{background:#fff;color:var(--orange);border:2px solid var(--orange);}
+.btn-outline:hover{background:var(--orange-light);}
+.btn-dark{background:var(--dark);color:#fff;}
+.btn-dark:hover{background:var(--dark2);}
+.btn-sm{padding:8px 18px;font-size:12px;}
+.btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border);}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange);}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
 
-/* HERO */
-.hero{min-height:100vh;padding:130px 5% 80px;position:relative;overflow:hidden;}
-.hero-glow{position:absolute;top:0;right:0;width:600px;height:600px;background:radial-gradient(circle at 60% 30%,rgba(255,107,0,.1) 0%,transparent 65%);pointer-events:none;}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1200px;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.3);border-radius:20px;padding:6px 14px;font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:24px;}
-.hero-badge-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 1.5s infinite;}
-.hero-title{font-size:clamp(52px,7vw,90px);font-weight:900;line-height:.95;text-transform:uppercase;margin-bottom:20px;}
-.hero-title .o{color:var(--orange);}
-.hero-desc{font-size:16px;color:var(--text2);line-height:1.75;max-width:420px;margin-bottom:36px;}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
-.hero-stats{display:flex;gap:40px;margin-top:52px;}
-.h-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:var(--orange);}
-.h-stat-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
-.hero-visual{position:relative;}
-.hero-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;aspect-ratio:1;max-width:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;position:relative;}
-.hero-card-icon{width:88px;height:88px;background:var(--orange);border-radius:20px;display:flex;align-items:center;justify-content:center;}
-.hero-card-icon svg{width:48px;height:48px;stroke:#fff;fill:none;stroke-width:1.5;}
-.hero-card-name{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;text-transform:uppercase;}
-.hero-card-sub{font-size:13px;color:var(--text3);}
-.hero-pill{position:absolute;bottom:20px;left:20px;background:var(--card2);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
-.hero-pill2{position:absolute;top:20px;right:20px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green);}
-.pill-lbl{font-size:10px;color:var(--text3);}
-.pill-val{font-size:13px;font-weight:600;}
-
-/* SECTIONS */
-.section{padding:96px 5%;}
-.sec-lbl{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:12px;}
-.sec-line{width:40px;height:3px;background:var(--orange);border-radius:2px;margin-bottom:24px;}
-.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:14px;}
-.sec-sub{font-size:15px;color:var(--text2);line-height:1.7;max-width:480px;}
+/* ══════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════ */
+.section{padding:96px 7%;}
+.sec-pill{display:inline-flex;align-items:center;gap:6px;background:var(--orange-light);color:var(--orange);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;padding:5px 14px;border-radius:30px;margin-bottom:14px;border:1px solid var(--orange-mid);}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,4vw,56px);font-weight:900;text-transform:uppercase;color:var(--dark);line-height:1;margin-bottom:14px;}
+.sec-title .orange{color:var(--orange);}
+.sec-sub{font-size:15px;color:var(--text2);line-height:1.8;max-width:520px;font-weight:500;}
 .sec-header{margin-bottom:56px;}
+.bg-off{background:var(--off);}
 .bg-dark{background:var(--dark);}
+.bg-orange{background:var(--orange);}
 
-/* SERVICES */
-.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
-.svc-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
-.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);opacity:0;transition:opacity .25s;}
-.svc-card:hover{border-color:rgba(255,107,0,.4);transform:translateY(-3px);}
-.svc-card:hover::before{opacity:1;}
-.svc-icon{width:48px;height:48px;background:var(--orange-bg);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
-.svc-icon svg{width:24px;height:24px;stroke:var(--orange);fill:none;stroke-width:2;}
-.svc-card h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;margin-bottom:8px;}
-.svc-card p{font-size:13px;color:var(--text2);line-height:1.65;}
-.svc-link{margin-top:16px;font-size:12px;font-weight:700;color:var(--orange);display:flex;align-items:center;gap:5px;}
+/* ══════════════════════════════════════
+   SERVICES
+══════════════════════════════════════ */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+.svc-card{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:16px;padding:30px;
+  cursor:pointer;transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.svc-card::before{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:3px;
+  background:var(--orange);
+  transform:scaleX(0);transition:transform .3s;transform-origin:left;
+}
+.svc-card:hover{border-color:var(--orange);transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.svc-card:hover::before{transform:scaleX(1);}
+.svc-icon{width:52px;height:52px;background:var(--orange-light);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:all .3s;}
+.svc-icon svg{width:26px;height:26px;stroke:var(--orange);fill:none;stroke-width:2;}
+.svc-card:hover .svc-icon{background:var(--orange);}
+.svc-card:hover .svc-icon svg{stroke:#fff;}
+.svc-card h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:10px;}
+.svc-card p{font-size:13px;color:var(--text2);line-height:1.7;font-weight:500;}
+.svc-featured-rows{margin:14px 0;display:flex;flex-direction:column;gap:8px;}
+.svc-row{display:flex;align-items:flex-start;gap:10px;background:var(--off);border-radius:10px;padding:10px 12px;}
+.svc-row svg{width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:2;margin-top:1px;flex-shrink:0;}
+.svc-row strong{font-size:12px;font-weight:800;color:var(--dark);display:block;}
+.svc-row span{font-size:11px;color:var(--text2);}
+.svc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.svc-tag{font-size:10px;font-weight:800;background:var(--orange-light);color:var(--orange);padding:3px 10px;border-radius:20px;border:1px solid var(--orange-mid);text-transform:uppercase;letter-spacing:.5px;}
+.svc-link{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--orange);margin-top:16px;text-transform:uppercase;letter-spacing:.5px;}
+.svc-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;}
 
-/* AVANTAGES */
-.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;}
-.adv-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 20px;transition:all .2s;}
-.adv-card:hover{border-color:var(--border2);background:var(--card2);}
-.adv-num{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:rgba(255,107,0,.12);line-height:1;margin-bottom:8px;}
-.adv-icon{margin-bottom:14px;}
+/* ══════════════════════════════════════
+   AVANTAGES
+══════════════════════════════════════ */
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+.adv-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:26px;transition:all .25s;}
+.adv-card:hover{border-color:var(--orange);box-shadow:var(--shadow);}
+.adv-num{font-family:'Barlow Condensed',sans-serif;font-size:56px;font-weight:900;color:var(--orange-mid);line-height:1;margin-bottom:8px;}
+.adv-icon{width:42px;height:42px;background:var(--orange-light);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
 .adv-icon svg{width:20px;height:20px;stroke:var(--orange);fill:none;stroke-width:2;}
-.adv-card h4{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;margin-bottom:6px;}
-.adv-card p{font-size:12px;color:var(--text2);line-height:1.6;}
+.adv-card h4{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:6px;}
+.adv-card p{font-size:13px;color:var(--text2);line-height:1.65;font-weight:500;}
 
-/* STEPS */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
-.steps::before{content:'';position:absolute;top:35px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,var(--orange),rgba(255,107,0,.15));}
-.step{position:relative;z-index:1;text-align:center;padding:0 12px;}
-.step-num{width:70px;height:70px;border-radius:50%;background:var(--card);border:2px solid var(--orange);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
-.step-num svg{width:28px;height:28px;stroke:var(--orange);fill:none;stroke-width:2;}
-.step h4{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;margin-bottom:6px;}
-.step p{font-size:11px;color:var(--text2);line-height:1.6;}
+/* ══════════════════════════════════════
+   STEPS
+══════════════════════════════════════ */
+.steps-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.steps-wrap::before{content:'';position:absolute;top:44px;left:12%;right:12%;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange-mid));z-index:0;}
+.step{position:relative;z-index:1;text-align:center;padding:0 16px;}
+.step-circle{width:88px;height:88px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:var(--shadow-orange);}
+.step-num{position:absolute;top:-8px;right:calc(50% - 50px);width:24px;height:24px;background:var(--dark);border-radius:50%;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;}
+.step-circle svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:2;}
+.step h4{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:8px;}
+.step p{font-size:12px;color:var(--text2);line-height:1.65;font-weight:500;}
 
-/* FORMS */
-.form-page{padding:100px 5% 60px;min-height:100vh;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:920px;}
-.form-block-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;text-transform:uppercase;color:var(--orange);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
-.form-block-title svg{width:16px;height:16px;stroke:var(--orange);fill:none;stroke-width:2;}
+/* ══════════════════════════════════════
+   CTA BAND
+══════════════════════════════════════ */
+.cta-band{background:var(--dark);padding:80px 7%;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;}
+.cta-band h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:900;text-transform:uppercase;color:#fff;line-height:1;}
+.cta-band h2 span{color:var(--orange);}
+.cta-band p{font-size:15px;color:#888;margin-top:10px;font-weight:500;}
+
+/* ══════════════════════════════════════
+   FORMULAIRES
+══════════════════════════════════════ */
+.form-page{padding:100px 7% 60px;min-height:100vh;background:var(--off);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;}
+.form-block{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow);}
+.form-block-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--off);display:flex;align-items:center;gap:8px;}
+.form-block-title svg{width:18px;height:18px;stroke:var(--orange);fill:none;stroke-width:2;}
 .fgroup{margin-bottom:16px;}
-.flabel{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block;}
-.finput{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--text);font-family:'Outfit',sans-serif;outline:none;transition:border-color .2s;}
-.finput:focus{border-color:var(--orange);}
+.flabel{font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block;}
+.finput{width:100%;background:var(--off);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--dark);font-family:'Nunito',sans-serif;outline:none;transition:border-color .2s;font-weight:600;}
+.finput:focus{border-color:var(--orange);background:#fff;}
 .finput::placeholder{color:var(--text3);}
 textarea.finput{resize:vertical;min-height:80px;}
-.upload-zone{border:2px dashed var(--border2);border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;}
-.upload-zone:hover{border-color:var(--orange);background:var(--orange-glow);}
+select.finput{cursor:pointer;}
+.upload-zone{border:2px dashed var(--border2);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:var(--off);}
+.upload-zone:hover{border-color:var(--orange);background:var(--orange-light);}
 .upload-zone svg{width:28px;height:28px;stroke:var(--text3);fill:none;stroke-width:2;margin:0 auto 8px;display:block;}
-.upload-zone p{font-size:12px;color:var(--text3);}
-.upload-zone span{font-size:12px;color:var(--orange);font-weight:600;}
-.ferror{color:var(--red);font-size:12px;margin-top:5px;display:block;}
-.success-box{text-align:center;padding:60px 20px;max-width:500px;margin:0 auto;}
-.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(34,197,94,.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
-.success-icon svg{width:38px;height:38px;stroke:var(--green);fill:none;stroke-width:2;}
-.order-id-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 24px;margin:20px 0 28px;display:inline-block;}
-.order-id-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.order-id-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--orange);}
+.upload-zone p{font-size:12px;color:var(--text2);font-weight:600;}
+.upload-zone span{font-size:12px;color:var(--orange);font-weight:800;}
 
-/* TRACKING */
-.track-page{padding:100px 5% 60px;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
-.track-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;width:100%;max-width:560px;margin-bottom:32px;}
+/* SERVICE PICKER */
+.picker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;max-width:820px;}
+.picker-card{background:#fff;border:2px solid var(--border);border-radius:16px;padding:24px 18px;cursor:pointer;transition:all .25s;text-align:center;}
+.picker-card:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.picker-card .svc-icon{margin:0 auto 12px;}
+.picker-card h3{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;text-transform:uppercase;color:var(--dark);}
+.picker-card p{font-size:11px;color:var(--text3);margin-top:4px;font-weight:600;}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:28px;}
+.breadcrumb button{background:none;border:none;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'Nunito',sans-serif;font-weight:700;}
+.breadcrumb button:hover{color:var(--orange);}
+.breadcrumb svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;}
+.breadcrumb span{font-size:13px;font-weight:800;color:var(--orange);}
+
+/* SUCCESS */
+.success-box{text-align:center;padding:60px 20px;max-width:520px;margin:0 auto;}
+.success-icon{width:90px;height:90px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:var(--shadow-orange);}
+.success-icon svg{width:42px;height:42px;stroke:#fff;fill:none;stroke-width:2.5;}
+.order-id-box{background:var(--dark);border-radius:14px;padding:18px 28px;margin:20px 0 28px;display:inline-block;}
+.order-id-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;font-weight:700;}
+.order-id-val{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;word-break:break-all;}
+
+/* ══════════════════════════════════════
+   TRACKING
+══════════════════════════════════════ */
+.track-page{padding:100px 7% 60px;min-height:100vh;background:var(--off);display:flex;flex-direction:column;align-items:center;}
+.track-search{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:580px;margin-bottom:32px;box-shadow:var(--shadow);}
 .track-row{display:flex;gap:10px;}
-.track-input{flex:1;background:var(--black);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;color:var(--text);font-family:'Outfit',sans-serif;outline:none;}
+.track-input{flex:1;background:var(--off);border:1.5px solid var(--border);border-radius:50px;padding:13px 20px;font-size:14px;color:var(--dark);font-family:'Nunito',sans-serif;outline:none;font-weight:600;}
 .track-input:focus{border-color:var(--orange);}
-.track-result{width:100%;max-width:560px;}
-.track-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;}
-.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;}
-.s-wait{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.3);}
-.s-prog{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.3);}
-.s-done{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
-.s-cancel{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3);}
+.track-result{width:100%;max-width:580px;}
+.track-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow);}
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:30px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.s-wait{background:#fef3c7;color:#92400e;border:1.5px solid #fcd34d;}
+.s-prog{background:#dbeafe;color:#1e40af;border:1.5px solid #93c5fd;}
+.s-done{background:#dcfce7;color:#166534;border:1.5px solid #86efac;}
+.s-cancel{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5;}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;}
-.info-item{display:flex;gap:8px;}
-.info-item svg{width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:2;margin-top:2px;flex-shrink:0;}
-.info-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
-.info-val{font-size:13px;font-weight:500;}
-.timeline{border-top:1px solid var(--border);padding-top:20px;margin-top:8px;}
-.tl-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
-.tl-item{display:flex;gap:14px;padding-bottom:20px;position:relative;}
-.tl-item:not(:last-child)::before{content:'';position:absolute;left:14px;top:30px;bottom:0;width:1px;background:var(--border);}
-.tl-dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.tl-dot.done{border-color:var(--green);background:rgba(34,197,94,.1);}
-.tl-dot.active{border-color:var(--orange);background:rgba(255,107,0,.1);}
-.tl-dot svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
-.tl-dot.done svg{color:var(--green);}
-.tl-dot.active svg{color:var(--orange);}
-.tl-info h4{font-size:14px;font-weight:600;margin-bottom:2px;}
-.tl-info p{font-size:11px;color:var(--text3);}
-.not-found{text-align:center;padding:40px;background:var(--card);border:1px solid var(--border);border-radius:12px;max-width:560px;width:100%;}
-.not-found svg{width:40px;height:40px;stroke:var(--text3);fill:none;stroke-width:2;margin:0 auto 14px;display:block;}
+.info-item{display:flex;gap:10px;align-items:flex-start;}
+.info-item svg{width:16px;height:16px;stroke:var(--orange);fill:none;stroke-width:2;margin-top:1px;flex-shrink:0;}
+.info-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+.info-val{font-size:13px;font-weight:700;color:var(--dark);}
+.journey{margin-top:24px;border-top:1.5px solid var(--border);padding-top:24px;}
+.journey-title{font-size:11px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;}
+.journey-item{display:flex;gap:14px;padding-bottom:22px;position:relative;}
+.journey-item:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--border);}
+.journey-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;}
+.journey-dot.done{border-color:var(--green);background:#dcfce7;}
+.journey-dot.active{border-color:var(--orange);background:var(--orange-light);}
+.journey-dot svg{width:14px;height:14px;stroke:var(--text3);fill:none;stroke-width:2;}
+.journey-dot.done svg{stroke:var(--green);}
+.journey-dot.active svg{stroke:var(--orange);}
+.journey-info h4{font-size:14px;font-weight:800;color:var(--dark);margin-bottom:2px;}
+.journey-info.inactive h4{color:var(--text3);}
+.journey-info p{font-size:11px;color:var(--text3);font-weight:600;}
+.not-found{text-align:center;padding:48px;background:#fff;border:1.5px solid var(--border);border-radius:16px;max-width:580px;width:100%;}
+.not-found svg{width:44px;height:44px;stroke:var(--text3);fill:none;stroke-width:2;margin:0 auto 14px;display:block;}
 
-/* ADMIN LOGIN */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--black);padding:20px;}
-.login-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:40px;width:100%;max-width:400px;}
-.login-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-align:center;margin-bottom:4px;}
-.login-logo .accent{color:var(--orange);}
-.login-sub{text-align:center;font-size:12px;color:var(--text3);margin-bottom:32px;text-transform:uppercase;letter-spacing:1px;}
-
-/* ADMIN LAYOUT */
-.admin-layout{display:flex;min-height:100vh;}
-.sidebar{width:230px;background:var(--card);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:50;}
-.sb-logo{padding:20px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
-.sb-logo .accent{color:var(--orange);}
-.sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:3px;}
-.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .2s;}
-.sb-item:hover{background:var(--card2);color:var(--text);}
-.sb-item.active{background:var(--orange-bg);color:var(--orange);}
-.sb-item svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
-.sb-footer{padding:14px 10px;border-top:1px solid var(--border);}
-.admin-main{margin-left:230px;flex:1;padding:28px;min-height:100vh;}
-.admin-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;}
-.admin-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;}
-.stat-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
-.stat-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;}
-.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;line-height:1;}
-.stat-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
-
-/* TABLE */
-.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px;}
-.table-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);}
-.table-head h3{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;text-transform:uppercase;}
+/* ══════════════════════════════════════
+   ADMIN
+══════════════════════════════════════ */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--off);padding:20px;}
+.login-card{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:44px;width:100%;max-width:420px;box-shadow:var(--shadow-lg);}
+.login-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:6px;}
+.login-logo-icon{width:48px;height:48px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.login-logo-icon svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.5;}
+.login-logo-text{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--dark);text-transform:uppercase;letter-spacing:1px;}
+.login-sub{text-align:center;font-size:12px;color:var(--text3);margin-bottom:32px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.admin-layout{display:flex;min-height:100vh;background:var(--off);}
+.sidebar{width:240px;background:#fff;border-right:1.5px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:50;box-shadow:4px 0 16px rgba(0,0,0,0.04);}
+.sb-logo{padding:22px 20px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sb-logo-icon{width:38px;height:38px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.sb-logo-icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2.5;}
+.sb-logo-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--dark);text-transform:uppercase;letter-spacing:1px;}
+.sb-logo-tag{font-size:10px;color:var(--orange);font-weight:700;letter-spacing:1px;}
+.sb-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;color:var(--text2);transition:all .2s;}
+.sb-item:hover{background:var(--off);color:var(--dark);}
+.sb-item.active{background:var(--orange-light);color:var(--orange);}
+.sb-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+.sb-footer{padding:16px 12px;border-top:1.5px solid var(--border);}
+.admin-main{margin-left:240px;flex:1;padding:32px;min-height:100vh;}
+.admin-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
+.admin-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;color:var(--dark);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:22px;box-shadow:var(--shadow);}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.stat-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;line-height:1;color:var(--dark);}
+.stat-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;font-weight:700;}
+.table-wrap{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px;box-shadow:var(--shadow);}
+.table-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1.5px solid var(--border);}
+.table-head h3{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;text-transform:uppercase;color:var(--dark);}
 .tbl-scroll{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
-th{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);white-space:nowrap;}
-td{padding:12px 14px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border);}
-td:first-child{color:var(--text);font-weight:600;}
+th{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:12px 16px;text-align:left;border-bottom:1.5px solid var(--border);background:var(--off);white-space:nowrap;}
+td{padding:13px 16px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border);font-weight:600;}
+td:first-child{color:var(--dark);font-weight:800;}
 tr:last-child td{border-bottom:none;}
-tr:hover td{background:rgba(255,255,255,.02);}
-.td-actions{display:flex;gap:6px;align-items:center;}
-.act{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:background .2s;}
-.act svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
-.act-assign{background:rgba(34,197,94,.1);color:#4ade80;}
-.act-assign:hover{background:rgba(34,197,94,.25);}
-.act-edit{background:rgba(255,107,0,.1);color:var(--orange);}
-.act-edit:hover{background:rgba(255,107,0,.25);}
-.act-del{background:rgba(239,68,68,.1);color:#f87171;}
-.act-del:hover{background:rgba(239,68,68,.25);}
-
-/* DRIVERS */
-.drivers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;}
-.driver-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;}
-.d-avatar{width:46px;height:46px;border-radius:50%;background:var(--orange-bg);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--orange);margin-bottom:12px;}
-.d-name{font-size:14px;font-weight:600;margin-bottom:3px;}
-.d-phone{font-size:11px;color:var(--text3);margin-bottom:10px;}
-.avail{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
-.avail-y{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
-.avail-n{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3);}
-.avail-dot{width:5px;height:5px;border-radius:50%;}
+tr:hover td{background:var(--off);}
+.td-actions{display:flex;gap:6px;}
+.act{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:all .2s;}
+.act svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.act-assign{background:#dcfce7;color:#166534;}.act-assign:hover{background:#bbf7d0;}
+.act-edit{background:var(--orange-light);color:var(--orange);}.act-edit:hover{background:var(--orange-mid);}
+.act-del{background:#fee2e2;color:#991b1b;}.act-del:hover{background:#fecaca;}
+.drivers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+.driver-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);}
+.d-avatar{width:50px;height:50px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#fff;margin-bottom:12px;}
+.d-name{font-size:14px;font-weight:800;color:var(--dark);margin-bottom:3px;}
+.d-phone{font-size:12px;color:var(--text3);margin-bottom:10px;font-weight:600;}
+.avail{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;}
+.avail-y{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.avail-n{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.avail-dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
 .d-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-.d-stat{font-size:11px;color:var(--text3);}
-.d-stat strong{font-size:13px;color:var(--text);font-weight:600;}
+.d-stat{font-size:11px;color:var(--text3);font-weight:700;}
+.d-stat strong{font-size:14px;color:var(--dark);}
 .d-actions{display:flex;gap:6px;}
-
-/* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
 .overlay.hidden{display:none;}
-.modal{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:26px;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;position:relative;}
-.modal h3{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;margin-bottom:18px;}
-.modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;line-height:1;}
-
-/* DRIVER OPTION */
-.driver-opt{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--card2);border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s;margin-bottom:8px;}
-.driver-opt:hover{border-color:var(--orange);}
+.modal{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:var(--shadow-lg);}
+.modal h3{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:18px;}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--off);border:none;color:var(--text2);cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.driver-opt{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--off);border-radius:12px;border:1.5px solid var(--border);cursor:pointer;transition:all .2s;margin-bottom:8px;}
+.driver-opt:hover{border-color:var(--orange);background:var(--orange-light);}
 .driver-opt-info{display:flex;align-items:center;gap:10px;}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;z-index:500;background:var(--card2);border:1px solid var(--green);border-radius:10px;padding:13px 18px;font-size:13px;display:flex;align-items:center;gap:9px;color:var(--green);box-shadow:0 8px 32px rgba(0,0,0,.5);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;}
+.toast{position:fixed;bottom:24px;right:24px;z-index:500;background:#fff;border:2px solid var(--green);border-radius:12px;padding:14px 20px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:10px;color:var(--green);box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
-.toast.error{border-color:var(--red);color:#f87171;}
-.toast svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
-
-/* LOADING */
+.toast.error{border-color:var(--red);color:var(--red);}
+.toast svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
 .loading{display:flex;justify-content:center;align-items:center;padding:48px;color:var(--text3);}
-.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;margin-right:12px;}
+.spinner{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;margin-right:10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* FOOTER */
-.footer{background:var(--card);border-top:1px solid var(--border);padding:48px 5% 24px;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px;}
-.f-brand p{font-size:12px;color:var(--text3);line-height:1.8;margin-top:10px;max-width:250px;}
-.f-col h4{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;margin-bottom:12px;}
-.f-col a{display:block;font-size:12px;color:var(--text3);margin-bottom:7px;cursor:pointer;text-decoration:none;transition:color .2s;}
-.f-col a:hover{color:var(--orange);}
-.footer-bottom{border-top:1px solid var(--border);padding-top:18px;display:flex;justify-content:space-between;font-size:11px;color:var(--text3);}
-.f-accent{display:inline-block;width:28px;height:2px;background:var(--orange);vertical-align:middle;margin-right:6px;}
-
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.fu{animation:fadeUp .5s ease both;}
-.fu1{animation-delay:.08s;}.fu2{animation-delay:.16s;}.fu3{animation-delay:.24s;}.fu4{animation-delay:.32s;}
+.footer{background:var(--dark);padding:64px 7% 28px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+.f-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.f-brand-icon{width:38px;height:38px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;}
+.f-brand-icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2.5;}
+.f-brand-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;}
+.f-brand p{font-size:13px;color:#64748b;line-height:1.8;max-width:240px;font-weight:500;}
+.f-col h4{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
+.f-col a{display:block;font-size:13px;color:#64748b;margin-bottom:8px;cursor:pointer;text-decoration:none;transition:color .2s;font-weight:600;}
+.f-col a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid #1e293b;padding-top:24px;display:flex;justify-content:space-between;font-size:12px;color:#475569;font-weight:600;}
 
 /* RESPONSIVE */
-@media(max-width:960px){
-  .hero-grid{grid-template-columns:1fr;}
-  .hero-visual{display:none;}
-  .steps{grid-template-columns:1fr 1fr;}
-  .steps::before{display:none;}
+@media(max-width:1024px){
+  .hero-main{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  .hero-cards{grid-template-columns:1fr 1fr;}
+  .steps-wrap{grid-template-columns:1fr 1fr;}
+  .steps-wrap::before{display:none;}
   .stats-grid{grid-template-columns:1fr 1fr;}
   .footer-grid{grid-template-columns:1fr 1fr;}
-  .form-grid{grid-template-columns:1fr;}
 }
 @media(max-width:640px){
   .navbar{padding:0 4%;}
   .nav-links{display:none;}
-  .hero{padding:100px 4% 60px;}
-  .section{padding:60px 4%;}
-  .form-page,.track-page{padding:88px 4% 40px;}
-  .steps{grid-template-columns:1fr;}
+  .hero-left{padding:60px 4%;}
+  .section,.form-page,.track-page{padding-left:4%;padding-right:4%;}
+  .hero-cards{grid-template-columns:1fr 1fr;}
+  .steps-wrap{grid-template-columns:1fr;}
   .footer-grid{grid-template-columns:1fr;}
   .footer-bottom{flex-direction:column;gap:6px;}
   .admin-main{margin-left:0;padding:16px;}
   .sidebar{display:none;}
   .stats-grid{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .cta-band{flex-direction:column;text-align:center;}
 }
 </style>
 </head>
@@ -306,398 +509,419 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <!-- ════════════ NAVBAR ════════════ -->
 <nav class="navbar" id="navbar">
   <div class="nav-logo" onclick="navigate('home')">
-    Livreur<span class="accent">Plus</span>
-    <span class="dot"></span>
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    </div>
+    <div class="nav-logo-texts">
+      <span class="nav-logo-name">LivreurPlus</span>
+      <span class="nav-logo-tag">Togo</span>
+    </div>
   </div>
   <div class="nav-links">
     <span class="nav-link active" id="nl-home" onclick="navigate('home')">Accueil</span>
-    <span class="nav-link" id="nl-order" onclick="navigate('order')">Commander</span>
+    <span class="nav-link" id="nl-order" onclick="navigate('order')">Services</span>
     <span class="nav-link" id="nl-track" onclick="navigate('track')">Suivi</span>
-    <span class="nav-link" id="nl-about" onclick="navigate('about')">A propos</span>
-    <button class="nav-cta" id="admin-nav-btn" onclick="handleAdminNav()">Admin</button>
+    <span class="nav-link" onclick="navigate('home')">A propos</span>
+    <span class="nav-link" onclick="navigate('home')">Contact</span>
   </div>
+  <button class="nav-cta" id="admin-nav-btn" onclick="handleAdminNav()">Devenir Livreur</button>
 </nav>
-<div class="page-bar" id="page-bar"></div>
 
-<!-- ════════════════════════════════════════════
+<!-- ════════════════════════════════
      PAGE : HOME
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="page-home" class="page active">
+
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-glow"></div>
-    <div class="hero-grid">
-      <div>
-        <div class="hero-badge fu"><span class="hero-badge-dot"></span>Service premium de livraison</div>
-        <h1 class="hero-title fu fu1">Livraison<br><span class="o">Rapide &</span><br>Securisee</h1>
-        <p class="hero-desc fu fu2">LivreurPlus assure la prise en charge, le transport et la livraison de vos colis en toute securite au Togo et environs.</p>
-        <div class="hero-actions fu fu3">
-          <button class="btn btn-primary" onclick="navigate('order')">
-            <svg viewBox="0 0 24 24"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/><circle cx="18.5" cy="15.5" r="2.5"/><path d="M20.27 17.27 22 19"/></svg>
-            Commander maintenant
+    <div class="hero-main">
+
+      <!-- Gauche -->
+      <div class="hero-left">
+        <div class="hero-pill">
+          <span class="hero-pill-dot"></span>
+          Service N°1 a Togo
+        </div>
+
+        <h1 class="hero-title">
+          <span class="black">Votre livraison,</span><br>
+          <span class="orange">notre priorite !</span>
+        </h1>
+
+        <p class="hero-sub">Rapide, securisee et partout au Togo.</p>
+
+        <div class="hero-actions">
+          <button class="btn-hero-primary" onclick="navigate('order')">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Commander
           </button>
-          <button class="btn btn-outline" onclick="navigate('track')">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Suivre ma commande
+          <button class="btn-hero-secondary" onclick="navigate('order')">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="var(--orange)" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Devenir Partenaire
           </button>
         </div>
-        <div class="hero-stats fu fu4">
-          <div><div class="h-stat-num">500+</div><div class="h-stat-lbl">Livraisons</div></div>
-          <div><div class="h-stat-num">98%</div><div class="h-stat-lbl">Satisfaction</div></div>
-          <div><div class="h-stat-num">24h</div><div class="h-stat-lbl">Delai moyen</div></div>
+
+        <div class="hero-stats">
+          <div>
+            <div class="h-stat-num">500<span>+</span></div>
+            <div class="h-stat-lbl">Livraisons</div>
+          </div>
+          <div class="h-stat-div"></div>
+          <div>
+            <div class="h-stat-num">98<span>%</span></div>
+            <div class="h-stat-lbl">Satisfaits</div>
+          </div>
+          <div class="h-stat-div"></div>
+          <div>
+            <div class="h-stat-num">30<span>min</span></div>
+            <div class="h-stat-lbl">Delai moyen</div>
+          </div>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="hero-card">
-          <div class="hero-pill2">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span>
-            12 livreurs actifs
+
+      <!-- Droite — IMAGE -->
+      <div class="hero-right">
+
+        <!-- Badge flottant haut -->
+        <div class="hero-badge-float top-left">
+          <div class="hbf-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <div class="hero-card-icon">
-            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          </div>
-          <div class="hero-card-name">LivreurPlus</div>
-          <div class="hero-card-sub">Plateforme logistique premium</div>
-          <div class="hero-pill">
-            <svg viewBox="0 0 24 24" width="18" height="18" stroke="var(--orange)" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <div><div class="pill-lbl">Zone couverte</div><div class="pill-val">Togo & region</div></div>
+          <div>
+            <div class="hbf-val">Livre !</div>
+            <div class="hbf-lbl">Colis recu</div>
           </div>
         </div>
+
+        <!--
+          VOTRE IMAGE ICI
+          Remplacez le src par le chemin de votre image de livreur.
+          Recommande : PNG detoure sur fond transparent, livreur a moto.
+          Format conseille : hauteur min 800px, fond transparent.
+        -->
+        <div class="hero-img-wrap">
+          <img
+            id="hero-moto-img"
+            src="livreur.jpg"
+            alt="Livreur LivreurPlus a moto"
+            onerror="this.style.display='none';document.getElementById('hero-placeholder').style.display='flex';"
+          />
+          <div class="hero-img-placeholder" id="hero-placeholder" style="display:none;">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Badge flottant bas -->
+        <div class="hero-badge-float bottom-right">
+          <div class="hbf-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="hbf-val">En route</div>
+            <div class="hbf-lbl">Suivi en direct</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CARTES FLOTTANTES BAS HERO -->
+    <div class="hero-cards">
+      <div class="hero-card" onclick="openOrderForm('colis')">
+        <div class="hc-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div><div class="hc-title">Livraison express</div><div class="hc-desc">rapide et fiable</div></div>
+      </div>
+      <div class="hero-card" onclick="navigate('track')">
+        <div class="hc-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="hc-title">Suivi en temps reel</div><div class="hc-desc">de vos commandes</div></div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div><div class="hc-title">Partout au Togo</div><div class="hc-desc">couverture nationale</div></div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg></div>
+        <div><div class="hc-title">Service client</div><div class="hc-desc">a votre ecoute</div></div>
       </div>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section class="section bg-dark">
+  <section class="section">
     <div class="sec-header">
-      <div class="sec-lbl">Nos services</div>
-      <div class="sec-line"></div>
-      <h2 class="sec-title">Ce que nous<br><span style="color:var(--orange)">proposons</span></h2>
-      <p class="sec-sub" style="margin-top:14px;">Selectionnez votre type de livraison pour acceder au formulaire adapte a vos besoins.</p>
+      <div class="sec-pill">Nos services</div>
+      <h2 class="sec-title">Ce que nous <span class="orange">proposons</span></h2>
+      <p class="sec-sub">Selectionnez le type de livraison adapte a votre besoin. Chaque service est concu pour vous offrir la meilleure experience.</p>
     </div>
-    <div class="services-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+    <div class="services-grid">
 
-      <!-- CARD 1 : RÉSUMÉ Express + Standard + Urgente -->
-      <div class="svc-card svc-featured" onclick="openOrderForm('colis')" style="grid-column:span 1;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-          <div class="svc-icon" style="margin-bottom:0;flex-shrink:0;"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-          <h3 style="font-size:22px;">Livraison Colis</h3>
+      <div class="svc-card" onclick="openOrderForm('colis')">
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <h3>Livraison Colis</h3>
+        <div class="svc-featured-rows">
+          <div class="svc-row"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><div><strong>Express</strong><span>Livraison dans les heures qui suivent</span></div></div>
+          <div class="svc-row"><svg viewBox="0 0 24 24"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg><div><strong>Standard</strong><span>Tout type de colis, securise et assure</span></div></div>
+          <div class="svc-row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><strong>Urgente</strong><span>Intervention immediate 24h/24 7j/7</span></div></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
-          <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,107,0,.05);border:1px solid rgba(255,107,0,.12);border-radius:8px;padding:10px 12px;">
-            <svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--orange)" fill="none" stroke-width="2" style="margin-top:1px;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            <div><span style="font-size:12px;font-weight:700;color:var(--text);">Express</span><p style="font-size:11px;color:var(--text2);margin-top:2px;">Meme jour, livraison dans les heures qui suivent.</p></div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,107,0,.05);border:1px solid rgba(255,107,0,.12);border-radius:8px;padding:10px 12px;">
-            <svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--orange)" fill="none" stroke-width="2" style="margin-top:1px;flex-shrink:0;"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>
-            <div><span style="font-size:12px;font-weight:700;color:var(--text);">Standard</span><p style="font-size:11px;color:var(--text2);margin-top:2px;">Tout type de colis, fragile ou volumineux, securise.</p></div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,107,0,.05);border:1px solid rgba(255,107,0,.12);border-radius:8px;padding:10px 12px;">
-            <svg viewBox="0 0 24 24" width="15" height="15" stroke="var(--orange)" fill="none" stroke-width="2" style="margin-top:1px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <div><span style="font-size:12px;font-weight:700;color:var(--text);">Urgente</span><p style="font-size:11px;color:var(--text2);margin-top:2px;">Intervention immediate, disponible 24h/24 7j/7.</p></div>
-          </div>
-        </div>
-        <div class="svc-link">Faire une demande <svg viewBox="0 0 24 24" width="12" height="12"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="svc-link">Faire une demande <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
 
-      <!-- CARD 2 : BOUTIQUE -->
       <div class="svc-card" onclick="openOrderForm('boutique')">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
         <h3>Livraison Boutique</h3>
-        <p>Service dedie aux commercants et boutiques. Livrez vos clients directement depuis votre point de vente. Gestion multi-commandes possible.</p>
-        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;">
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Commerce</span>
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Multi-colis</span>
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Abonnement</span>
-        </div>
-        <div class="svc-link" style="margin-top:16px;">Faire une demande <svg viewBox="0 0 24 24" width="12" height="12"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <p>Service dedie aux commercants. Livrez vos clients directement depuis votre boutique. Gestion multi-commandes disponible avec abonnement.</p>
+        <div class="svc-tags"><span class="svc-tag">Commerce</span><span class="svc-tag">Multi-colis</span><span class="svc-tag">Abonnement</span></div>
+        <div class="svc-link">Faire une demande <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
 
-      <!-- CARD 3 : RESTAURANT -->
       <div class="svc-card" onclick="openOrderForm('restaurant')">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
         <h3>Livraison Restaurant</h3>
-        <p>Livraison de repas chauds a domicile depuis vos restaurants partenaires. Sacs isothermes, delais garantis, satisfaction client prioritaire.</p>
-        <div style="margin-top:14px;display:flex;flex-wrap:gap:6px;flex-wrap:wrap;gap:6px;">
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Repas chauds</span>
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Isotherme</span>
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Rapide</span>
-        </div>
-        <div class="svc-link" style="margin-top:16px;">Faire une demande <svg viewBox="0 0 24 24" width="12" height="12"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <p>Repas chauds livres a domicile. Sacs isothermes inclus, delais garantis. Votre satisfaction client est notre priorite absolue.</p>
+        <div class="svc-tags"><span class="svc-tag">Repas chauds</span><span class="svc-tag">Isotherme</span><span class="svc-tag">Rapide</span></div>
+        <div class="svc-link">Faire une demande <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
 
-      <!-- CARD 4 : INTERNATIONAL -->
       <div class="svc-card" onclick="openOrderForm('international')">
         <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <h3>Livraison Internationale</h3>
-        <p>Envoi de colis vers l'international depuis le Togo. Suivi douanier, documentation complete, partenaires logistiques certifies.</p>
-        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;">
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Douane</span>
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Tracking</span>
-          <span style="font-size:10px;font-weight:700;background:rgba(255,107,0,.1);color:var(--orange);padding:3px 9px;border-radius:20px;border:1px solid rgba(255,107,0,.2);">Assure</span>
-        </div>
-        <div class="svc-link" style="margin-top:16px;">Faire une demande <svg viewBox="0 0 24 24" width="12" height="12"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <p>Envoi de colis depuis Togo vers l'international. Suivi douanier, documentation complete, partenaires logistiques certifies.</p>
+        <div class="svc-tags"><span class="svc-tag">Douane</span><span class="svc-tag">Tracking</span><span class="svc-tag">Assure</span></div>
+        <div class="svc-link">Faire une demande <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
 
     </div>
   </section>
 
   <!-- AVANTAGES -->
-  <section class="section">
+  <section class="section bg-off">
     <div class="sec-header">
-      <div class="sec-lbl">Pourquoi nous choisir</div>
-      <div class="sec-line"></div>
-      <h2 class="sec-title">Nos<br><span style="color:var(--orange)">avantages</span></h2>
+      <div class="sec-pill">Pourquoi nous choisir</div>
+      <h2 class="sec-title">Nos <span class="orange">avantages</span></h2>
     </div>
     <div class="adv-grid">
-      <div class="adv-card"><div class="adv-num">01</div><div class="adv-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>Reactivite</h4><p>Prise en charge immediate des la confirmation de votre commande.</p></div>
-      <div class="adv-card"><div class="adv-num">02</div><div class="adv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h4>Rapidite</h4><p>Livraison express dans les meilleurs delais garantis.</p></div>
-      <div class="adv-card"><div class="adv-num">03</div><div class="adv-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>Fiabilite</h4><p>Livreurs formes, suivis et evalues en permanence.</p></div>
-      <div class="adv-card"><div class="adv-num">04</div><div class="adv-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><h4>Suivi en Direct</h4><p>Suivez l'avancement de votre livraison a chaque etape.</p></div>
-      <div class="adv-card"><div class="adv-num">05</div><div class="adv-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h4>Securite</h4><p>Vos colis sont pris en charge avec soin et assurance.</p></div>
+      <div class="adv-card"><div class="adv-num">01</div><div class="adv-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>Ultra-rapide</h4><p>Prise en charge en moins de 5 minutes apres confirmation. Livraison express dans les meilleurs delais.</p></div>
+      <div class="adv-card"><div class="adv-num">02</div><div class="adv-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><h4>Suivi en direct</h4><p>Suivez votre colis etape par etape en temps reel. Vous etes toujours informe de l'avancement.</p></div>
+      <div class="adv-card"><div class="adv-num">03</div><div class="adv-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>Securite garantie</h4><p>Livreurs verifies et formes. Vos colis sont assures et manipules avec le plus grand soin.</p></div>
+      <div class="adv-card"><div class="adv-num">04</div><div class="adv-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div><h4>Equipe pro</h4><p>Des livreurs professionnels, courtois et ponctuels. Votre satisfaction est notre priorite numero un.</p></div>
+      <div class="adv-card"><div class="adv-num">05</div><div class="adv-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h4>Prix justes</h4><p>Tarifs transparents et competitifs. Aucun frais cache, vous payez exactement ce qui est affiche.</p></div>
     </div>
   </section>
 
-  <!-- COMMENT CA MARCHE -->
-  <section class="section bg-dark">
+  <!-- STEPS -->
+  <section class="section">
     <div class="sec-header">
-      <div class="sec-lbl">Processus</div>
-      <div class="sec-line"></div>
-      <h2 class="sec-title">Comment ca<br><span style="color:var(--orange)">marche ?</span></h2>
+      <div class="sec-pill">Processus</div>
+      <h2 class="sec-title">Comment ca <span class="orange">marche ?</span></h2>
     </div>
-    <div class="steps">
-      <div class="step"><div class="step-num"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div><h4>Commande</h4><p>Le client remplit le formulaire avec les details de son envoi.</p></div>
-      <div class="step"><div class="step-num"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg></div><h4>Reception</h4><p>L'agence recoit et valide la commande en quelques minutes.</p></div>
-      <div class="step"><div class="step-num"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg></div><h4>Assignation</h4><p>Un livreur disponible est affecte a la commande.</p></div>
-      <div class="step"><div class="step-num"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><h4>Livraison</h4><p>Le colis est livre et le statut mis a jour en temps reel.</p></div>
+    <div class="steps-wrap">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-circle"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h4>Commande</h4>
+        <p>Remplissez le formulaire avec les details de votre envoi en quelques clics.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-circle"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <h4>Notification</h4>
+        <p>Confirmation immediate et notre equipe prend en charge votre demande.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-circle"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg></div>
+        <h4>Assignation</h4>
+        <p>Un livreur certifie est assigne et part immediatement recuperer votre colis.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h4>Livraison</h4>
+        <p>Votre colis arrive a destination. Statut mis a jour en temps reel.</p>
+      </div>
     </div>
   </section>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <div>
+      <h2>Pret a envoyer<br>votre <span>premier colis ?</span></h2>
+      <p>Rejoignez plus de 500 clients satisfaits chaque jour.</p>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="navigate('order')">Commander maintenant</button>
+      <button class="btn btn-ghost" style="color:#fff;border-color:#444;" onclick="navigate('track')">Suivre un colis</button>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-grid">
       <div class="f-brand">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;">Livreur<span style="color:var(--orange)">Plus</span></div>
-        <p>Votre partenaire logistique de confiance au Togo. Livraison rapide, securisee, professionnelle.</p>
+        <div class="f-brand-logo">
+          <div class="f-brand-icon"><svg viewBox="0 0 24 24" stroke="#fff" fill="none" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <span class="f-brand-name">LivreurPlus</span>
+        </div>
+        <p>Votre partenaire logistique de confiance a Togo. Livraison rapide, securisee et professionnelle.</p>
       </div>
-      <div class="f-col"><h4>Navigation</h4><a onclick="navigate('home')">Accueil</a><a onclick="navigate('order')">Commander</a><a onclick="navigate('track')">Suivi</a></div>
-      <div class="f-col"><h4>Services</h4><a>Livraison express</a><a>Livraison colis</a><a>Livraison boutique</a><a>Livraison urgente</a></div>
-      <div class="f-col"><h4>Contact</h4><a>+228 90 00 00 00</a><a>contact@livreurplus.tg</a><a>Lomé, Togo</a></div>
+      <div class="f-col"><h4>Navigation</h4><a onclick="navigate('home')">Accueil</a><a onclick="navigate('order')">Commander</a><a onclick="navigate('track')">Suivi</a><a>A propos</a></div>
+      <div class="f-col"><h4>Services</h4><a>Livraison colis</a><a>Livraison boutique</a><a>Livraison restaurant</a><a>Livraison internationale</a></div>
+      <div class="f-col"><h4>Contact</h4><a>+228 99 50 06 69</a><a>contact@livreurplus.bf</a><a>Togo</a></div>
     </div>
     <div class="footer-bottom">
-      <span><span class="f-accent"></span>2026 LivreurPlus. Tous droits reserves.</span>
-      <span>Fait au Togo</span>
+      <span>2028 LivreurPlus — Tous droits reserves.</span>
+      <span>Fait avec fierte au Togo</span>
     </div>
   </footer>
 </div>
 
-<!-- ════════════════════════════════════════════
+<!-- ════════════════════════════════
      PAGE : ORDER
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="page-order" class="page">
   <div class="form-page">
-
-    <!-- SÉLECTEUR SERVICE (si arrivée directe) -->
-    <div id="service-picker" style="display:none;">
-      <div class="sec-lbl">Commande</div>
-      <h1 class="sec-title" style="font-size:clamp(32px,4vw,52px);margin-bottom:8px;">Quel type de <span style="color:var(--orange)">livraison ?</span></h1>
-      <p style="color:var(--text2);font-size:14px;margin-bottom:36px;">Selectionnez votre service pour acceder au formulaire adapte.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:800px;">
-        <div class="svc-card" onclick="openOrderForm('colis')" style="cursor:pointer;">
-          <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-          <h3 style="font-size:18px;">Colis</h3><p style="font-size:12px;">Express, Standard ou Urgente</p>
-        </div>
-        <div class="svc-card" onclick="openOrderForm('boutique')" style="cursor:pointer;">
-          <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-          <h3 style="font-size:18px;">Boutique</h3><p style="font-size:12px;">Commerce et multi-commandes</p>
-        </div>
-        <div class="svc-card" onclick="openOrderForm('restaurant')" style="cursor:pointer;">
-          <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
-          <h3 style="font-size:18px;">Restaurant</h3><p style="font-size:12px;">Repas chauds a domicile</p>
-        </div>
-        <div class="svc-card" onclick="openOrderForm('international')" style="cursor:pointer;">
-          <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-          <h3 style="font-size:18px;">International</h3><p style="font-size:12px;">Envoi vers l'etranger</p>
-        </div>
+    <div id="service-picker">
+      <div class="sec-pill" style="margin-bottom:14px;">Commander</div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:8px;">Quel type de <span style="color:var(--orange)">livraison ?</span></h1>
+      <p style="color:var(--text2);font-size:14px;margin-bottom:36px;font-weight:600;">Selectionnez votre service pour acceder au formulaire adapte.</p>
+      <div class="picker-grid">
+        <div class="picker-card" onclick="openOrderForm('colis')"><div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><h3>Colis</h3><p>Express, Standard, Urgente</p></div>
+        <div class="picker-card" onclick="openOrderForm('boutique')"><div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><h3>Boutique</h3><p>Commerce & multi-colis</p></div>
+        <div class="picker-card" onclick="openOrderForm('restaurant')"><div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div><h3>Restaurant</h3><p>Repas chauds a domicile</p></div>
+        <div class="picker-card" onclick="openOrderForm('international')"><div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h3>International</h3><p>Envoi vers l'etranger</p></div>
       </div>
     </div>
 
-    <!-- FORMULAIRE DYNAMIQUE -->
     <div id="order-form-wrap" style="display:none;">
-      <!-- BREADCRUMB -->
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px;">
-        <button onclick="backToServices()" style="background:none;border:none;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'Outfit',sans-serif;">
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Nos services
-        </button>
+      <div class="breadcrumb">
+        <button onclick="backToServices()"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Services</button>
         <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--text3)" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        <span id="form-breadcrumb" style="font-size:13px;color:var(--orange);font-weight:600;">—</span>
+        <span id="form-breadcrumb">—</span>
       </div>
-
-      <!-- HEADER FORMULAIRE -->
-      <div id="form-header" style="margin-bottom:36px;">
-        <div class="sec-lbl" id="form-service-label">Service</div>
-        <h1 class="sec-title" style="font-size:clamp(32px,4vw,52px);margin-bottom:6px;" id="form-title">Passer une commande</h1>
-        <p style="color:var(--text2);font-size:14px;" id="form-subtitle">Remplissez les informations ci-dessous.</p>
+      <div style="margin-bottom:32px;">
+        <div class="sec-pill" id="form-service-label" style="margin-bottom:12px;"></div>
+        <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:6px;" id="form-title"></h1>
+        <p style="color:var(--text2);font-size:14px;font-weight:600;" id="form-subtitle"></p>
       </div>
-
       <form id="order-form" onsubmit="submitOrder(event)">
         <input type="hidden" id="f-service-type" value="colis"/>
         <div class="form-grid">
-
-          <!-- COLONNE GAUCHE : Infos client (communes à tous) -->
-          <div>
-            <div class="form-block-title">
-              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Informations client
-            </div>
+          <div class="form-block">
+            <div class="form-block-title"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Informations client</div>
             <div class="fgroup"><label class="flabel">Nom complet *</label><input class="finput" id="f-nom" placeholder="Aminata Diallo" required/></div>
             <div class="fgroup"><label class="flabel">Telephone *</label><input class="finput" id="f-tel" type="tel" placeholder="07 00 11 22 33" required/></div>
             <div class="fgroup"><label class="flabel">Adresse de livraison *</label><input class="finput" id="f-adresse" placeholder="Secteur 12, Rue 18..." required/></div>
-            <div class="fgroup"><label class="flabel">Repere / Localisation</label><input class="finput" id="f-loc" placeholder="Pres du marche central..."/></div>
-            <div class="fgroup"><label class="flabel">Notes supplementaires</label><textarea class="finput" id="f-notes" placeholder="Appeler avant d'arriver..."></textarea></div>
+            <div class="fgroup"><label class="flabel">Repere</label><input class="finput" id="f-loc" placeholder="Pres du marche central..."/></div>
+            <div class="fgroup"><label class="flabel">Notes</label><textarea class="finput" id="f-notes" placeholder="Appeler avant d'arriver..."></textarea></div>
           </div>
-
-          <!-- COLONNE DROITE : Champs dynamiques selon le service -->
-          <div id="form-right-col">
-            <!-- Injecte dynamiquement selon le service -->
-          </div>
-
+          <div class="form-block" id="form-right-col"></div>
         </div>
       </form>
     </div>
 
-    <!-- SUCCÈS -->
     <div id="order-success" class="success-box" style="display:none;">
       <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <h2 style="font-size:36px;text-transform:uppercase;margin-bottom:8px;">Commande Envoyee !</h2>
-      <p style="color:var(--text2);margin-bottom:16px;">Votre commande a ete enregistree en base de donnees.</p>
-      <div class="order-id-box">
-        <div class="order-id-lbl">Votre identifiant de suivi</div>
-        <div class="order-id-val" id="new-order-id">—</div>
-      </div>
-      <p style="color:var(--text3);font-size:12px;margin-bottom:28px;">Conservez cet identifiant pour suivre votre commande. Vous serez contacte rapidement.</p>
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;text-transform:uppercase;color:var(--dark);margin-bottom:8px;">Commande envoyee !</h2>
+      <p style="color:var(--text2);margin-bottom:16px;font-weight:600;">Votre commande a ete enregistree avec succes en base de donnees.</p>
+      <div class="order-id-box"><div class="order-id-lbl">Identifiant de suivi</div><div class="order-id-val" id="new-order-id">—</div></div>
+      <p style="color:var(--text3);font-size:12px;margin-bottom:28px;font-weight:700;">Conservez cet identifiant pour suivre votre commande.</p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="resetOrderForm()">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Nouvelle commande
-        </button>
-        <button class="btn btn-outline" onclick="navigate('track')">
-          <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          Suivre ma commande
-        </button>
+        <button class="btn btn-primary" onclick="resetOrderForm()"><svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nouvelle commande</button>
+        <button class="btn btn-outline" onclick="navigate('track')"><svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Suivre mon colis</button>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
+<!-- ════════════════════════════════
      PAGE : TRACK
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="page-track" class="page">
   <div class="track-page">
-    <div class="sec-lbl" style="margin-bottom:8px;">Suivi de commande</div>
-    <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:900;text-transform:uppercase;margin-bottom:8px;text-align:center;">Ou est <span style="color:var(--orange)">mon colis ?</span></h1>
-    <p style="color:var(--text2);font-size:14px;margin-bottom:36px;text-align:center;">Entrez votre identifiant de commande pour suivre votre livraison.</p>
-    <div class="track-box">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div class="sec-pill" style="margin-bottom:12px;display:inline-flex;">Suivi en direct</div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:900;text-transform:uppercase;color:var(--dark);">Ou est <span style="color:var(--orange)">mon colis ?</span></h1>
+      <p style="color:var(--text2);font-size:14px;font-weight:600;max-width:440px;margin:8px auto 0;">Entrez votre identifiant de commande pour suivre votre livraison.</p>
+    </div>
+    <div class="track-search">
       <label class="flabel">Identifiant de commande</label>
       <div class="track-row">
-        <input class="track-input" id="track-input" placeholder="Ex: cm9abc123xyz..." onkeydown="if(event.key==='Enter')trackOrder()"/>
+        <input class="track-input" id="track-input" placeholder="Collez votre ID ici..." onkeydown="if(event.key==='Enter')trackOrder()"/>
         <button class="btn btn-primary btn-sm" onclick="trackOrder()" id="track-btn">
-          <svg viewBox="0 0 24 24" width="15" height="15" stroke="#fff" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           Rechercher
         </button>
       </div>
-      <p style="font-size:11px;color:var(--text3);margin-top:10px;">Collez l'identifiant recu apres votre commande</p>
+      <p style="font-size:11px;color:var(--text3);margin-top:10px;font-weight:700;">L'identifiant vous a ete communique apres votre commande</p>
     </div>
     <div id="track-result"></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
+<!-- ════════════════════════════════
      PAGE : ADMIN LOGIN
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="page-adminLogin" class="page">
   <div class="login-wrap">
     <div class="login-card">
-      <div class="login-logo">Livreur<span class="accent">Plus</span></div>
-      <div class="login-sub">Connexion administrateur</div>
-      <div class="fgroup">
-        <label class="flabel">Email</label>
-        <input class="finput" id="login-email" type="email" placeholder="admin@livreurplus.bf" value="admin@livreurplus.bf"/>
+      <div class="login-logo">
+        <div class="login-logo-icon"><svg viewBox="0 0 24 24" stroke="#fff" fill="none" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <span class="login-logo-text">LivreurPlus</span>
       </div>
-      <div class="fgroup">
-        <label class="flabel">Mot de passe</label>
-        <input class="finput" id="login-pwd" type="password" placeholder="••••••••" value="admin123" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <div id="login-err" style="display:none;color:var(--red);font-size:12px;margin-bottom:12px;"></div>
+      <div class="login-sub">Espace administrateur</div>
+      <div class="fgroup"><label class="flabel">Email</label><input class="finput" id="login-email" type="email" placeholder="admin@livreurplus.bf" value="admin@livreurplus.bf"/></div>
+      <div class="fgroup"><label class="flabel">Mot de passe</label><input class="finput" id="login-pwd" type="password" placeholder="••••••••" value="admin123" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div id="login-err" style="display:none;color:var(--red);font-size:12px;margin-bottom:12px;font-weight:700;"></div>
       <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="doLogin()" id="login-btn">
         <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         Se connecter
       </button>
-      <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:14px;">admin@livreurplus.bf / admin123</p>
+      <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:14px;font-weight:700;">admin@livreurplus.bf / admin123</p>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
+<!-- ════════════════════════════════
      PAGE : ADMIN DASHBOARD
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="page-admin" class="page">
   <div class="admin-layout">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="sb-logo">Livreur<span class="accent">Plus</span></div>
+      <div class="sb-logo">
+        <div class="sb-logo-icon"><svg viewBox="0 0 24 24" stroke="#fff" fill="none" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div><div class="sb-logo-name">LivreurPlus</div><div class="sb-logo-tag">Admin</div></div>
+      </div>
       <div class="sb-nav">
-        <div class="sb-item active" id="sb-dashboard" onclick="adminNav('dashboard')">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Vue globale
-        </div>
-        <div class="sb-item" id="sb-orders" onclick="adminNav('orders')">
-          <svg viewBox="0 0 24 24"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/></svg>Commandes
-        </div>
-        <div class="sb-item" id="sb-drivers" onclick="adminNav('drivers')">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Livreurs
-        </div>
+        <div class="sb-item active" id="sb-dashboard" onclick="adminNav('dashboard')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Vue globale</div>
+        <div class="sb-item" id="sb-orders" onclick="adminNav('orders')"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg>Commandes</div>
+        <div class="sb-item" id="sb-drivers" onclick="adminNav('drivers')"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Livreurs</div>
       </div>
       <div class="sb-footer">
-        <div class="sb-item" onclick="doLogout()">
-          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Deconnexion
-        </div>
+        <div class="sb-item" onclick="doLogout()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Deconnexion</div>
       </div>
     </aside>
+    <main class="admin-main">
 
-    <!-- MAIN CONTENT -->
-    <main class="admin-main" id="admin-main">
       <!-- DASHBOARD VIEW -->
       <div id="view-dashboard">
         <div class="admin-topbar">
           <h1 class="admin-title">Vue Globale</h1>
           <div style="display:flex;gap:10px;">
-            <button class="btn btn-outline btn-sm" onclick="loadStats();loadOrders()">
-              <svg viewBox="0 0 24 24" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-              Actualiser
-            </button>
-            <button class="btn btn-primary btn-sm" onclick="navigate('order')">Nouvelle commande</button>
+            <button class="btn btn-ghost btn-sm" onclick="loadStats();loadDashOrders()"><svg viewBox="0 0 24 24" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Actualiser</button>
+            <button class="btn btn-primary btn-sm" onclick="navigate('order')">+ Commande</button>
           </div>
         </div>
-        <div class="stats-grid" id="stats-grid">
-          <div class="loading"><div class="spinner"></div>Chargement...</div>
-        </div>
+        <div class="stats-grid" id="stats-grid"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
         <div class="table-wrap">
-          <div class="table-head">
-            <h3>Dernieres commandes</h3>
-            <button class="btn btn-outline btn-sm" onclick="adminNav('orders')">Voir tout</button>
-          </div>
+          <div class="table-head"><h3>Dernieres commandes</h3><button class="btn btn-ghost btn-sm" onclick="adminNav('orders')">Voir tout</button></div>
           <div class="tbl-scroll"><table><thead><tr><th>ID</th><th>Client</th><th>Produit</th><th>Statut</th><th>Livreur</th><th>Date</th></tr></thead><tbody id="dash-orders-tbody"><tr><td colspan="6" class="loading"><div class="spinner"></div>Chargement...</td></tr></tbody></table></div>
         </div>
       </div>
 
       <!-- ORDERS VIEW -->
       <div id="view-orders" style="display:none;">
-        <div class="admin-topbar">
-          <h1 class="admin-title">Commandes</h1>
-          <span id="orders-count" style="font-size:13px;color:var(--text3);">—</span>
-        </div>
+        <div class="admin-topbar"><h1 class="admin-title">Commandes</h1><span id="orders-count" style="font-size:13px;color:var(--text3);font-weight:700;">—</span></div>
         <div class="table-wrap">
           <div class="tbl-scroll"><table><thead><tr><th>ID</th><th>Client</th><th>Tel</th><th>Produit</th><th>Montant</th><th>Statut</th><th>Livreur</th><th>Date</th><th>Actions</th></tr></thead><tbody id="orders-tbody"><tr><td colspan="9" class="loading"><div class="spinner"></div>Chargement...</td></tr></tbody></table></div>
         </div>
@@ -707,38 +931,32 @@ tr:hover td{background:rgba(255,255,255,.02);}
       <div id="view-drivers" style="display:none;">
         <div class="admin-topbar">
           <h1 class="admin-title">Livreurs</h1>
-          <button class="btn btn-primary btn-sm" onclick="openAddDriver()">
-            <svg viewBox="0 0 24 24" width="13" height="13" stroke="#fff" fill="none" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Ajouter un livreur
-          </button>
+          <button class="btn btn-primary btn-sm" onclick="openAddDriver()"><svg viewBox="0 0 24 24" width="13" height="13" stroke="#fff" fill="none" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter un livreur</button>
         </div>
-        <div class="drivers-grid" id="drivers-grid">
-          <div class="loading"><div class="spinner"></div>Chargement...</div>
-        </div>
+        <div class="drivers-grid" id="drivers-grid"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
       </div>
+
     </main>
   </div>
 </div>
 
-<!-- ════ MODALS ════ -->
+<!-- MODALS -->
 <div class="overlay hidden" id="modal-assign">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-assign')">&#x2715;</button>
     <h3>Assigner un livreur</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:18px;">Commande : <strong id="assign-order-id" style="color:var(--orange)">—</strong></p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:18px;font-weight:600;">Commande : <strong id="assign-order-id" style="color:var(--orange)">—</strong></p>
     <div id="assign-drivers-list"></div>
   </div>
 </div>
-
 <div class="overlay hidden" id="modal-status">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-status')">&#x2715;</button>
     <h3>Changer le statut</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:18px;">Commande : <strong id="status-order-id" style="color:var(--orange)">—</strong></p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:18px;font-weight:600;">Commande : <strong id="status-order-id" style="color:var(--orange)">—</strong></p>
     <div id="status-options"></div>
   </div>
 </div>
-
 <div class="overlay hidden" id="modal-add-driver">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modal-add-driver')">&#x2715;</button>
@@ -747,754 +965,138 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="fgroup"><label class="flabel">Telephone *</label><input class="finput" id="nd-tel" placeholder="07 00 11 22 33"/></div>
     <div style="display:flex;gap:10px;margin-top:8px;">
       <button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="submitAddDriver()" id="add-driver-btn">Ajouter</button>
-      <button class="btn btn-outline" style="flex:1;justify-content:center;" onclick="closeModal('modal-add-driver')">Annuler</button>
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="closeModal('modal-add-driver')">Annuler</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-  <span id="toast-msg"></span>
-</div>
+<div class="toast" id="toast"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span id="toast-msg"></span></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-//  CONFIGURATION — Changer l'URL si le backend est déployé
-// ═══════════════════════════════════════════════════════════
-const API = 'https://livreurplus-api.onrender.com/api';
+const API='https://livreurplus-api.onrender.com/api';
+let authToken=localStorage.getItem('lp_token')||null;
+let currentAdminView='dashboard',selectedOrderId=null,selectedOrderForStatus=null;
 
-let authToken = localStorage.getItem('lp_token') || null;
-let currentAdminView = 'dashboard';
-let selectedOrderId = null;
-let selectedOrderForStatus = null;
-
-// ─── CONFIGS FORMULAIRES PAR SERVICE ────────────────────────
-const SERVICE_CONFIG = {
-  colis: {
-    label: 'Livraison Colis',
-    sublabel: 'Express / Standard / Urgente',
-    subtitle: 'Remplissez les informations de votre colis. Nous nous occupons du reste.',
-    produitPlaceholder: 'iPhone 14, Robe, Documents officiels...',
-    rightCol: `
-      <div class="form-block-title">
-        <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        Details du colis
-      </div>
-      <div class="fgroup">
-        <label class="flabel">Type de livraison *</label>
-        <select class="finput" id="f-type-colis">
-          <option value="Express">Express — Livraison dans les heures qui suivent</option>
-          <option value="Standard">Standard — Livraison dans la journee</option>
-          <option value="Urgente">Urgente — Intervention immediate 24h/24</option>
-        </select>
-      </div>
-      <div class="fgroup"><label class="flabel">Nom / Description du colis *</label><input class="finput" id="f-prod" placeholder="iPhone 14, Documents, Vetements..." required/></div>
-      <div class="fgroup"><label class="flabel">Details (fragile, dimensions...)</label><textarea class="finput" id="f-desc" placeholder="Ex: Fragile, 30x20cm, ne pas retourner..."></textarea></div>
-      <div class="fgroup"><label class="flabel">Valeur declaree (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="45000"/></div>
-      <div class="fgroup">
-        <label class="flabel">Photo du colis (optionnel)</label>
-        <div class="upload-zone" onclick="document.getElementById('f-img').click()">
-          <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-          <p>Glissez une image ici</p><span>ou cliquez pour parcourir</span>
-        </div>
-        <input type="file" id="f-img" accept="image/*" style="display:none" onchange="previewImg(this)"/>
-        <div id="img-preview" style="margin-top:8px;display:none;"><img id="img-preview-img" style="width:100%;border-radius:8px;max-height:120px;object-fit:cover;border:1px solid var(--border)"/></div>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" id="submit-btn">
-        <svg viewBox="0 0 24 24" width="17" height="17" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        <span id="submit-txt">Envoyer la commande</span>
-      </button>
-      <div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;"></div>
-    `,
-    buildDescription: () => {
-      const type = document.getElementById('f-type-colis')?.value || '';
-      const desc = document.getElementById('f-desc')?.value || '';
-      return `[${type}] ${desc}`.trim();
-    }
-  },
-
-  boutique: {
-    label: 'Livraison Boutique',
-    sublabel: 'Commerce & Multi-commandes',
-    subtitle: 'Service dedie aux commercants. Livrez vos clients directement depuis votre boutique.',
-    rightCol: `
-      <div class="form-block-title">
-        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Informations boutique
-      </div>
-      <div class="fgroup"><label class="flabel">Nom de la boutique *</label><input class="finput" id="f-boutique-nom" placeholder="Boutique Aminata, Shop Royal..." required/></div>
-      <div class="fgroup"><label class="flabel">Telephone boutique *</label><input class="finput" id="f-boutique-tel" type="tel" placeholder="07 00 11 22 33"/></div>
-      <div class="fgroup"><label class="flabel">Adresse de la boutique (depart) *</label><input class="finput" id="f-boutique-adresse" placeholder="Secteur 3, Zone commerciale..." required/></div>
-      <div class="fgroup"><label class="flabel">Description des articles *</label><input class="finput" id="f-prod" placeholder="Robes, chaussures, electronique..." required/></div>
-      <div class="fgroup">
-        <label class="flabel">Nombre de commandes a livrer</label>
-        <select class="finput" id="f-nb-commandes">
-          <option value="1">1 commande</option>
-          <option value="2-5">2 a 5 commandes</option>
-          <option value="6-10">6 a 10 commandes</option>
-          <option value="10+">Plus de 10 commandes</option>
-        </select>
-      </div>
-      <div class="fgroup"><label class="flabel">Valeur totale des articles (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="150000"/></div>
-      <div class="fgroup"><label class="flabel">Instructions speciales</label><textarea class="finput" id="f-desc" placeholder="Horaires de recuperation, acces specifique..."></textarea></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" id="submit-btn">
-        <svg viewBox="0 0 24 24" width="17" height="17" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        <span id="submit-txt">Envoyer la demande</span>
-      </button>
-      <div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;"></div>
-    `,
-    buildDescription: () => {
-      const nom = document.getElementById('f-boutique-nom')?.value || '';
-      const tel = document.getElementById('f-boutique-tel')?.value || '';
-      const adr = document.getElementById('f-boutique-adresse')?.value || '';
-      const nb = document.getElementById('f-nb-commandes')?.value || '';
-      const inst = document.getElementById('f-desc')?.value || '';
-      return `[Boutique] ${nom} | Tel: ${tel} | Depart: ${adr} | Nb commandes: ${nb} | ${inst}`;
-    }
-  },
-
-  restaurant: {
-    label: 'Livraison Restaurant',
-    sublabel: 'Repas chauds a domicile',
-    subtitle: 'Livraison de repas depuis votre restaurant vers vos clients. Sacs isothermes, rapidite garantie.',
-    rightCol: `
-      <div class="form-block-title">
-        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-        Informations restaurant
-      </div>
-      <div class="fgroup"><label class="flabel">Nom du restaurant *</label><input class="finput" id="f-resto-nom" placeholder="Restaurant Le Baobab, Chez Mama..." required/></div>
-      <div class="fgroup"><label class="flabel">Telephone restaurant *</label><input class="finput" id="f-resto-tel" type="tel" placeholder="07 00 11 22 33"/></div>
-      <div class="fgroup"><label class="flabel">Adresse du restaurant (depart) *</label><input class="finput" id="f-resto-adresse" placeholder="Avenue Houet, Secteur 8..." required/></div>
-      <div class="fgroup"><label class="flabel">Detail des plats / commande *</label><input class="finput" id="f-prod" placeholder="Riz sauce arachide x2, Jus de gingembre..." required/></div>
-      <div class="fgroup">
-        <label class="flabel">Nombre de repas</label>
-        <select class="finput" id="f-nb-repas">
-          <option value="1">1 repas</option>
-          <option value="2-4">2 a 4 repas</option>
-          <option value="5-10">5 a 10 repas</option>
-          <option value="10+">Plus de 10 repas</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label class="flabel">Heure de recuperation souhaitee</label>
-        <input class="finput" id="f-heure-recup" type="time" placeholder="12:30"/>
-      </div>
-      <div class="fgroup"><label class="flabel">Montant de la commande (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="8500"/></div>
-      <div class="fgroup"><label class="flabel">Instructions livraison</label><textarea class="finput" id="f-desc" placeholder="Sonner au portail, etage 2, appartement B..."></textarea></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" id="submit-btn">
-        <svg viewBox="0 0 24 24" width="17" height="17" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        <span id="submit-txt">Envoyer la demande</span>
-      </button>
-      <div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;"></div>
-    `,
-    buildDescription: () => {
-      const nom = document.getElementById('f-resto-nom')?.value || '';
-      const tel = document.getElementById('f-resto-tel')?.value || '';
-      const adr = document.getElementById('f-resto-adresse')?.value || '';
-      const nb = document.getElementById('f-nb-repas')?.value || '';
-      const heure = document.getElementById('f-heure-recup')?.value || '';
-      const inst = document.getElementById('f-desc')?.value || '';
-      return `[Restaurant] ${nom} | Tel: ${tel} | Depart: ${adr} | ${nb} repas | Recup: ${heure} | ${inst}`;
-    }
-  },
-
-  international: {
-    label: 'Livraison Internationale',
-    sublabel: 'Envoi vers l\'etranger',
-    subtitle: 'Expediez vos colis depuis le Togo vers l\'international avec suivi complet et gestion douaniere.',
-    rightCol: `
-      <div class="form-block-title">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        Details de l\'envoi international
-      </div>
-      <div class="fgroup"><label class="flabel">Pays de destination *</label><input class="finput" id="f-pays" placeholder="France, Cote d'Ivoire, Senegal..." required/></div>
-      <div class="fgroup"><label class="flabel">Ville de destination *</label><input class="finput" id="f-ville-dest" placeholder="Paris, Abidjan, Dakar..." required/></div>
-      <div class="fgroup"><label class="flabel">Adresse complete du destinataire *</label><textarea class="finput" id="f-adresse-dest" placeholder="15 Rue de la Paix, 75001 Paris..." required></textarea></div>
-      <div class="fgroup"><label class="flabel">Nom et contact du destinataire *</label><input class="finput" id="f-prod" placeholder="Marie Dupont, +33 6 12 34 56 78" required/></div>
-      <div class="fgroup"><label class="flabel">Nature du colis *</label><input class="finput" id="f-nature-colis" placeholder="Documents, Vetements, Cadeaux..."/></div>
-      <div class="fgroup">
-        <label class="flabel">Poids estime du colis</label>
-        <select class="finput" id="f-poids">
-          <option value="moins-1kg">Moins de 1 kg (documents, petits objets)</option>
-          <option value="1-5kg">1 a 5 kg</option>
-          <option value="5-20kg">5 a 20 kg</option>
-          <option value="20kg+">Plus de 20 kg (contacter avant)</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label class="flabel">Valeur declaree pour la douane (FCFA)</label>
-        <input class="finput" id="f-montant" type="number" placeholder="200000"/>
-        <span style="font-size:11px;color:var(--text3);margin-top:4px;display:block;">Valeur reelle obligatoire pour le passage en douane.</span>
-      </div>
-      <div class="fgroup"><label class="flabel">Informations douanieres / Contenu detaille</label><textarea class="finput" id="f-desc" placeholder="Ex: 3 robes en coton, usage personnel, non commercial..."></textarea></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" id="submit-btn">
-        <svg viewBox="0 0 24 24" width="17" height="17" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        <span id="submit-txt">Envoyer la demande</span>
-      </button>
-      <div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;"></div>
-    `,
-    buildDescription: () => {
-      const pays = document.getElementById('f-pays')?.value || '';
-      const ville = document.getElementById('f-ville-dest')?.value || '';
-      const adrDest = document.getElementById('f-adresse-dest')?.value || '';
-      const nature = document.getElementById('f-nature-colis')?.value || '';
-      const poids = document.getElementById('f-poids')?.value || '';
-      const details = document.getElementById('f-desc')?.value || '';
-      return `[International] Destination: ${pays}, ${ville} | Adresse: ${adrDest} | Nature: ${nature} | Poids: ${poids} | ${details}`;
-    }
-  }
+const SERVICE_CONFIG={
+  colis:{label:'Livraison Colis',sublabel:'Express / Standard / Urgente',subtitle:'Remplissez les details de votre colis. Nous nous chargeons du reste.',rightCol:`<div class="form-block-title"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg>Details du colis</div><div class="fgroup"><label class="flabel">Type *</label><select class="finput" id="f-type-colis"><option value="Express">Express — dans les heures qui suivent</option><option value="Standard">Standard — dans la journee</option><option value="Urgente">Urgente — 24h/24 7j/7</option></select></div><div class="fgroup"><label class="flabel">Description du colis *</label><input class="finput" id="f-prod" placeholder="iPhone 14, Documents, Vetements..." required/></div><div class="fgroup"><label class="flabel">Details (fragile, dimensions...)</label><textarea class="finput" id="f-desc" placeholder="Ex: Fragile, 30x20cm..."></textarea></div><div class="fgroup"><label class="flabel">Valeur declaree (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="45000"/></div><div class="fgroup"><label class="flabel">Photo (optionnel)</label><div class="upload-zone" onclick="document.getElementById('f-img').click()"><svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg><p>Cliquez pour ajouter une image</p><span>JPG, PNG — max 5 Mo</span></div><input type="file" id="f-img" accept="image/*" style="display:none" onchange="previewImg(this)"/><div id="img-preview" style="margin-top:8px;display:none;"><img id="img-preview-img" style="width:100%;border-radius:10px;max-height:120px;object-fit:cover;"/></div></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="submit-btn"><svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span id="submit-txt">Envoyer la commande</span></button><div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;font-weight:700;"></div>`,buildDescription:()=>`[${document.getElementById('f-type-colis')?.value||''}] ${document.getElementById('f-desc')?.value||''}`},
+  boutique:{label:'Livraison Boutique',sublabel:'Commerce & Multi-commandes',subtitle:'Service dedie aux commercants. Livrez vos clients depuis votre boutique.',rightCol:`<div class="form-block-title"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Infos boutique</div><div class="fgroup"><label class="flabel">Nom de la boutique *</label><input class="finput" id="f-boutique-nom" placeholder="Boutique Aminata..." required/></div><div class="fgroup"><label class="flabel">Tel boutique</label><input class="finput" id="f-boutique-tel" type="tel" placeholder="07 00 11 22 33"/></div><div class="fgroup"><label class="flabel">Adresse boutique (depart) *</label><input class="finput" id="f-boutique-adresse" placeholder="Secteur 3, Zone commerciale..." required/></div><div class="fgroup"><label class="flabel">Articles a livrer *</label><input class="finput" id="f-prod" placeholder="Robes, chaussures, electronique..." required/></div><div class="fgroup"><label class="flabel">Nombre de commandes</label><select class="finput" id="f-nb-commandes"><option>1 commande</option><option>2 a 5 commandes</option><option>6 a 10 commandes</option><option>Plus de 10 commandes</option></select></div><div class="fgroup"><label class="flabel">Valeur totale (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="150000"/></div><div class="fgroup"><label class="flabel">Instructions</label><textarea class="finput" id="f-desc" placeholder="Horaires, acces..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="submit-btn"><svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span id="submit-txt">Envoyer la demande</span></button><div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;font-weight:700;"></div>`,buildDescription:()=>`[Boutique] ${document.getElementById('f-boutique-nom')?.value||''} | Tel: ${document.getElementById('f-boutique-tel')?.value||''} | Depart: ${document.getElementById('f-boutique-adresse')?.value||''} | Nb: ${document.getElementById('f-nb-commandes')?.value||''} | ${document.getElementById('f-desc')?.value||''}`},
+  restaurant:{label:'Livraison Restaurant',sublabel:'Repas chauds a domicile',subtitle:'Livraison de repas depuis votre restaurant. Isotherme et rapide.',rightCol:`<div class="form-block-title"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/></svg>Infos restaurant</div><div class="fgroup"><label class="flabel">Nom du restaurant *</label><input class="finput" id="f-resto-nom" placeholder="Restaurant Le Baobab..." required/></div><div class="fgroup"><label class="flabel">Tel restaurant</label><input class="finput" id="f-resto-tel" type="tel" placeholder="07 00 11 22 33"/></div><div class="fgroup"><label class="flabel">Adresse restaurant (depart) *</label><input class="finput" id="f-resto-adresse" placeholder="Avenue Houet, Secteur 8..." required/></div><div class="fgroup"><label class="flabel">Detail des plats *</label><input class="finput" id="f-prod" placeholder="Riz sauce arachide x2..." required/></div><div class="fgroup"><label class="flabel">Nombre de repas</label><select class="finput" id="f-nb-repas"><option>1 repas</option><option>2 a 4 repas</option><option>5 a 10 repas</option><option>Plus de 10 repas</option></select></div><div class="fgroup"><label class="flabel">Heure de recuperation</label><input class="finput" id="f-heure-recup" type="time"/></div><div class="fgroup"><label class="flabel">Montant (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="8500"/></div><div class="fgroup"><label class="flabel">Instructions livraison</label><textarea class="finput" id="f-desc" placeholder="Sonner au portail..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="submit-btn"><svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span id="submit-txt">Envoyer la demande</span></button><div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;font-weight:700;"></div>`,buildDescription:()=>`[Restaurant] ${document.getElementById('f-resto-nom')?.value||''} | Tel: ${document.getElementById('f-resto-tel')?.value||''} | Depart: ${document.getElementById('f-resto-adresse')?.value||''} | ${document.getElementById('f-nb-repas')?.value||''} | Recup: ${document.getElementById('f-heure-recup')?.value||''} | ${document.getElementById('f-desc')?.value||''}`},
+  international:{label:'Livraison Internationale',sublabel:'Envoi vers l\'etranger',subtitle:'Expedier depuis Togo vers le monde entier avec suivi douanier.',rightCol:`<div class="form-block-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Details de l'envoi</div><div class="fgroup"><label class="flabel">Pays de destination *</label><input class="finput" id="f-pays" placeholder="France, Cote d'Ivoire..." required/></div><div class="fgroup"><label class="flabel">Ville de destination *</label><input class="finput" id="f-ville-dest" placeholder="Paris, Abidjan..." required/></div><div class="fgroup"><label class="flabel">Adresse complete du destinataire *</label><textarea class="finput" id="f-adresse-dest" placeholder="15 Rue de la Paix, 75001..." required></textarea></div><div class="fgroup"><label class="flabel">Nom et contact destinataire *</label><input class="finput" id="f-prod" placeholder="Marie Dupont, +33 6 12 34 56 78" required/></div><div class="fgroup"><label class="flabel">Nature du colis</label><input class="finput" id="f-nature" placeholder="Documents, Vetements, Cadeaux..."/></div><div class="fgroup"><label class="flabel">Poids estime</label><select class="finput" id="f-poids"><option>Moins de 1 kg</option><option>1 a 5 kg</option><option>5 a 20 kg</option><option>Plus de 20 kg</option></select></div><div class="fgroup"><label class="flabel">Valeur douane (FCFA)</label><input class="finput" id="f-montant" type="number" placeholder="200000"/><span style="font-size:11px;color:var(--text3);margin-top:4px;display:block;font-weight:700;">Valeur reelle obligatoire pour la douane.</span></div><div class="fgroup"><label class="flabel">Contenu detaille</label><textarea class="finput" id="f-desc" placeholder="3 robes en coton, usage personnel..."></textarea></div><button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="submit-btn"><svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span id="submit-txt">Envoyer la demande</span></button><div id="order-error" style="display:none;color:var(--red);font-size:12px;margin-top:8px;font-weight:700;"></div>`,buildDescription:()=>`[International] ${document.getElementById('f-pays')?.value||''}, ${document.getElementById('f-ville-dest')?.value||''} | Adr: ${document.getElementById('f-adresse-dest')?.value||''} | Nature: ${document.getElementById('f-nature')?.value||''} | Poids: ${document.getElementById('f-poids')?.value||''} | ${document.getElementById('f-desc')?.value||''}`}
 };
 
-// ─── OUVRIR UN FORMULAIRE DE SERVICE ────────────────────────
-function openOrderForm(serviceType) {
-  const cfg = SERVICE_CONFIG[serviceType];
-  if (!cfg) return;
-
-  // Mémoriser le type
-  navigate('order');
-
-  // Cacher le picker, montrer le formulaire
-  document.getElementById('service-picker').style.display = 'none';
-  document.getElementById('order-form-wrap').style.display = 'block';
-  document.getElementById('order-success').style.display = 'none';
-
-  // Breadcrumb + header
-  document.getElementById('form-breadcrumb').textContent = cfg.label;
-  document.getElementById('form-service-label').textContent = cfg.sublabel;
-  document.getElementById('form-title').innerHTML = cfg.label.split(' ').slice(0,1).join(' ') + ' <span style="color:var(--orange)">' + cfg.label.split(' ').slice(1).join(' ') + '</span>';
-  document.getElementById('form-subtitle').textContent = cfg.subtitle;
-
-  // Injecter la colonne droite
-  document.getElementById('form-right-col').innerHTML = cfg.rightCol;
-
-  // Stocker le type
-  document.getElementById('f-service-type').value = serviceType;
-
-  // Reset erreur
-  const errEl = document.getElementById('order-error');
-  if (errEl) errEl.style.display = 'none';
+function openOrderForm(type){const cfg=SERVICE_CONFIG[type];if(!cfg)return;navigate('order');document.getElementById('service-picker').style.display='none';document.getElementById('order-form-wrap').style.display='block';document.getElementById('order-success').style.display='none';document.getElementById('form-breadcrumb').textContent=cfg.label;document.getElementById('form-service-label').textContent=cfg.sublabel;document.getElementById('form-title').innerHTML=cfg.label;document.getElementById('form-subtitle').textContent=cfg.subtitle;document.getElementById('form-right-col').innerHTML=cfg.rightCol;document.getElementById('f-service-type').value=type;}
+function backToServices(){document.getElementById('service-picker').style.display='block';document.getElementById('order-form-wrap').style.display='none';document.getElementById('order-success').style.display='none';}
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  const el=document.getElementById('page-'+page);if(el)el.classList.add('active');
+  const nl=document.getElementById('nl-'+page);if(nl)nl.classList.add('active');
+  const nb=document.getElementById('navbar');
+  if(page==='admin'||page==='adminLogin'){nb.style.display='none';}else{nb.style.display='';}
+  if(page==='order'){const fw=document.getElementById('order-form-wrap'),s=document.getElementById('order-success'),pk=document.getElementById('service-picker');if(fw.style.display==='none'&&s.style.display==='none')pk.style.display='block';}
+  window.scrollTo(0,0);
 }
-
-function backToServices() {
-  document.getElementById('service-picker').style.display = 'block';
-  document.getElementById('order-form-wrap').style.display = 'none';
-  document.getElementById('order-success').style.display = 'none';
-}
-
-// ─── NAVIGATION ─────────────────────────────────────────────
-function navigate(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const el = document.getElementById('page-' + page);
-  if (el) el.classList.add('active');
-  const nl = document.getElementById('nl-' + page);
-  if (nl) nl.classList.add('active');
-  const nb = document.getElementById('navbar');
-  const pb = document.getElementById('page-bar');
-  if (page === 'admin' || page === 'adminLogin') {
-    nb.style.display = 'none';
-    pb.style.display = 'none';
-  } else {
-    nb.style.display = '';
-    pb.style.display = '';
-  }
-  // Page commande : montrer le picker par défaut si pas de service déjà chargé
-  if (page === 'order') {
-    const formWrap = document.getElementById('order-form-wrap');
-    const success = document.getElementById('order-success');
-    const picker = document.getElementById('service-picker');
-    if (formWrap.style.display === 'none' && success.style.display === 'none') {
-      picker.style.display = 'block';
-    }
-  }
-  window.scrollTo(0, 0);
-}
-
-function handleAdminNav() {
-  if (authToken) { navigate('admin'); loadAdminData(); }
-  else navigate('adminLogin');
-}
-
-// ─── FETCH HELPER ─────────────────────────────────────────────
-async function api(path, opts = {}) {
-  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
-  if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
-  if (opts.body instanceof FormData) { delete headers['Content-Type']; }
-  const res = await fetch(API + path, { ...opts, headers });
-  return res.json();
-}
-
-// ─── TOAST ─────────────────────────────────────────────────
-function toast(msg, isError = false) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = msg;
-  t.className = 'toast show' + (isError ? ' error' : '');
-  setTimeout(() => t.className = 'toast', 3500);
-}
-
-// ─── UTILS ─────────────────────────────────────────────────
-function statusBadge(s) {
-  const map = {
-    EN_ATTENTE: ['s-wait', 'En attente'],
-    EN_COURS: ['s-prog', 'En cours'],
-    LIVRE: ['s-done', 'Livre'],
-    ANNULE: ['s-cancel', 'Annule'],
-  };
-  const [cls, label] = map[s] || ['s-wait', s];
-  return `<span class="status-badge ${cls}">${label}</span>`;
-}
-
-function fmtDate(d) {
-  return new Date(d).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-}
-
-function initials(name) {
-  return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.add('hidden');
-}
-
-function openModal(id) {
-  document.getElementById(id).classList.remove('hidden');
-}
-
-// ─── ORDER FORM ─────────────────────────────────────────────
-function previewImg(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      document.getElementById('img-preview-img').src = e.target.result;
-      document.getElementById('img-preview').style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-async function submitOrder(e) {
+function handleAdminNav(){if(authToken){navigate('admin');loadAdminData();}else navigate('adminLogin');}
+async function api(path,opts={}){const h={'Content-Type':'application/json',...(opts.headers||{})};if(authToken)h['Authorization']='Bearer '+authToken;if(opts.body instanceof FormData)delete h['Content-Type'];const r=await fetch(API+path,{...opts,headers:h});return r.json();}
+function toast(msg,isError=false){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.className='toast show'+(isError?' error':'');setTimeout(()=>t.className='toast',3500);}
+function statusBadge(s){const m={EN_ATTENTE:['s-wait','En attente'],EN_COURS:['s-prog','En cours'],LIVRE:['s-done','Livre'],ANNULE:['s-cancel','Annule']};const[cls,lbl]=m[s]||['s-wait',s];return`<span class="status-badge ${cls}">${lbl}</span>`;}
+function fmtDate(d){return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+function openModal(id){document.getElementById(id).classList.remove('hidden');}
+function previewImg(input){if(input.files&&input.files[0]){const r=new FileReader();r.onload=e=>{document.getElementById('img-preview-img').src=e.target.result;document.getElementById('img-preview').style.display='block';};r.readAsDataURL(input.files[0]);}}
+async function submitOrder(e){
   e.preventDefault();
-  const btn = document.getElementById('submit-btn');
-  const txt = document.getElementById('submit-txt');
-  const errEl = document.getElementById('order-error');
-  btn.disabled = true;
-  txt.textContent = 'Envoi en cours...';
-  if (errEl) errEl.style.display = 'none';
-
-  const serviceType = document.getElementById('f-service-type').value;
-  const cfg = SERVICE_CONFIG[serviceType];
-
-  // Construire la description enrichie selon le service
-  const description = cfg ? cfg.buildDescription() : (document.getElementById('f-desc')?.value || '');
-
-  const fd = new FormData();
-  fd.append('nomClient', document.getElementById('f-nom').value);
-  fd.append('telephone', document.getElementById('f-tel').value);
-  fd.append('adresse', document.getElementById('f-adresse').value);
-  fd.append('localisation', document.getElementById('f-loc')?.value || '');
-  fd.append('produit', (document.getElementById('f-prod')?.value || serviceType).trim());
-  fd.append('description', description);
-  fd.append('montant', document.getElementById('f-montant')?.value || '');
-  fd.append('notes', `[Service: ${cfg?.label || serviceType}] ` + (document.getElementById('f-notes')?.value || ''));
-
-  const imgFile = document.getElementById('f-img')?.files?.[0];
-  if (imgFile) fd.append('image', imgFile);
-
-  try {
-    const res = await fetch(API + '/commandes', { method: 'POST', body: fd });
-    const data = await res.json();
-    if (data.success) {
-      document.getElementById('new-order-id').textContent = data.data.id;
-      document.getElementById('order-form-wrap').style.display = 'none';
-      document.getElementById('service-picker').style.display = 'none';
-      document.getElementById('order-success').style.display = 'block';
-    } else {
-      if (errEl) { errEl.textContent = data.message || 'Erreur lors de l\'envoi.'; errEl.style.display = 'block'; }
-      btn.disabled = false;
-      txt.textContent = 'Envoyer la commande';
-    }
-  } catch {
-    if (errEl) { errEl.textContent = 'Impossible de joindre le serveur. Verifiez que le backend est demarre.'; errEl.style.display = 'block'; }
-    btn.disabled = false;
-    txt.textContent = 'Envoyer la commande';
-  }
+  const btn=document.getElementById('submit-btn'),txt=document.getElementById('submit-txt'),errEl=document.getElementById('order-error');
+  btn.disabled=true;txt.textContent='Envoi en cours...';if(errEl)errEl.style.display='none';
+  const type=document.getElementById('f-service-type').value,cfg=SERVICE_CONFIG[type];
+  const fd=new FormData();
+  fd.append('nomClient',document.getElementById('f-nom').value);
+  fd.append('telephone',document.getElementById('f-tel').value);
+  fd.append('adresse',document.getElementById('f-adresse').value);
+  fd.append('localisation',document.getElementById('f-loc')?.value||'');
+  fd.append('produit',(document.getElementById('f-prod')?.value||type).trim());
+  fd.append('description',cfg?cfg.buildDescription():'');
+  fd.append('montant',document.getElementById('f-montant')?.value||'');
+  fd.append('notes',`[Service: ${cfg?.label||type}] `+(document.getElementById('f-notes')?.value||''));
+  const img=document.getElementById('f-img')?.files?.[0];if(img)fd.append('image',img);
+  try{
+    const r=await fetch(API+'/commandes',{method:'POST',body:fd});const d=await r.json();
+    if(d.success){document.getElementById('new-order-id').textContent=d.data.id;document.getElementById('order-form-wrap').style.display='none';document.getElementById('service-picker').style.display='none';document.getElementById('order-success').style.display='block';}
+    else{if(errEl){errEl.textContent=d.message||'Erreur.';errEl.style.display='block';}btn.disabled=false;txt.textContent='Envoyer la commande';}
+  }catch{if(errEl){errEl.textContent='Serveur inaccessible.';errEl.style.display='block';}btn.disabled=false;txt.textContent='Envoyer la commande';}
 }
-
-function resetOrderForm() {
-  document.getElementById('order-form-wrap').style.display = 'none';
-  document.getElementById('order-success').style.display = 'none';
-  document.getElementById('service-picker').style.display = 'block';
-  document.getElementById('f-nom').value = '';
-  document.getElementById('f-tel').value = '';
-  document.getElementById('f-adresse').value = '';
-  document.getElementById('f-loc').value = '';
-  document.getElementById('f-notes').value = '';
-}
-
-// ─── TRACKING ─────────────────────────────────────────────
-async function trackOrder() {
-  const id = document.getElementById('track-input').value.trim();
-  if (!id) return;
-  const resultEl = document.getElementById('track-result');
-  const btn = document.getElementById('track-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;margin:0"></div>';
-  resultEl.innerHTML = '<div class="loading"><div class="spinner"></div>Recherche en cours...</div>';
-
-  try {
-    const data = await api('/commandes/' + encodeURIComponent(id));
-    btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" stroke="#fff" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Rechercher';
-
-    if (!data.success) {
-      resultEl.innerHTML = `<div class="not-found">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-        <p style="color:var(--text2);font-size:15px;margin-bottom:4px;">Commande introuvable.</p>
-        <p style="color:var(--text3);font-size:12px;">Verifiez l'identifiant et reessayez.</p>
-      </div>`;
-      return;
-    }
-
-    const c = data.data;
-    const statusMap = { EN_ATTENTE: [0], EN_COURS: [0,1,2], LIVRE: [0,1,2,3], ANNULE: [] };
-    const done = statusMap[c.statut] || [];
-
-    const tlSteps = [
-      { label: 'Commande recue', desc: 'Votre commande a ete enregistree avec succes.' },
-      { label: 'Traitement en cours', desc: 'L\'agence traite votre commande et assigne un livreur.' },
-      { label: 'En livraison', desc: c.livreur ? `${c.livreur.nom} est en route vers vous.` : 'Livreur en route.' },
-      { label: 'Livraison effectuee', desc: 'Votre colis a ete remis au destinataire.' },
-    ];
-
-    resultEl.innerHTML = `<div class="track-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
-        <div>
-          <p style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Commande</p>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--orange);word-break:break-all;">${c.id}</p>
-        </div>
+function resetOrderForm(){document.getElementById('order-form-wrap').style.display='none';document.getElementById('order-success').style.display='none';document.getElementById('service-picker').style.display='block';['f-nom','f-tel','f-adresse','f-loc','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});}
+async function trackOrder(){
+  const id=document.getElementById('track-input').value.trim();if(!id)return;
+  const resultEl=document.getElementById('track-result'),btn=document.getElementById('track-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner" style="width:16px;height:16px;margin:0"></div>';
+  resultEl.innerHTML='<div class="loading"><div class="spinner"></div>Recherche...</div>';
+  try{
+    const data=await api('/commandes/'+encodeURIComponent(id));
+    btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Rechercher';
+    if(!data.success){resultEl.innerHTML=`<div class="not-found"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><p style="font-size:16px;font-weight:800;color:var(--dark);margin-bottom:4px;">Commande introuvable</p><p style="color:var(--text3);font-size:13px;font-weight:600;">Verifiez l'identifiant et reessayez.</p></div>`;return;}
+    const c=data.data;
+    const sm={EN_ATTENTE:[0],EN_COURS:[0,1,2],LIVRE:[0,1,2,3],ANNULE:[]};
+    const done=sm[c.statut]||[];
+    const steps=[{l:'Commande recue',d:'Votre commande a ete enregistree avec succes.'},{l:'Prise en charge',d:'L\'equipe LivreurPlus traite votre commande.'},{l:'En livraison',d:c.livreur?c.livreur.nom+' est en route vers vous.':'Votre livreur est en route.'},{l:'Livre',d:'Votre colis a ete remis au destinataire.'}];
+    resultEl.innerHTML=`<div class="track-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+        <div><p style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;font-weight:800;margin-bottom:4px;">Commande</p><p style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--orange);word-break:break-all;">${c.id}</p></div>
         ${statusBadge(c.statut)}
       </div>
       <div class="info-grid">
         <div class="info-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div><div class="info-lbl">Client</div><div class="info-val">${c.nomClient}</div></div></div>
-        <div class="info-item"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><div class="info-lbl">Produit</div><div class="info-val">${c.produit}</div></div></div>
-        <div class="info-item"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07"/><path d="M11 11a10 10 0 0 1 11 1"/><path d="M1 1l22 22"/></svg><div><div class="info-lbl">Telephone</div><div class="info-val">${c.telephone}</div></div></div>
-        <div class="info-item"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg><div><div class="info-lbl">Livreur</div><div class="info-val">${c.livreur ? c.livreur.nom : 'En attente d\'assignation'}</div></div></div>
-        <div class="info-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><div class="info-lbl">Date</div><div class="info-val">${fmtDate(c.createdAt)}</div></div></div>
-        ${c.montant ? `<div class="info-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><div><div class="info-lbl">Valeur</div><div class="info-val">${parseInt(c.montant).toLocaleString('fr')} FCFA</div></div></div>` : ''}
+        <div class="info-item"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg><div><div class="info-lbl">Produit</div><div class="info-val">${c.produit}</div></div></div>
+        <div class="info-item"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2"/><path d="M1 1l22 22"/></svg><div><div class="info-lbl">Telephone</div><div class="info-val">${c.telephone}</div></div></div>
+        <div class="info-item"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg><div><div class="info-lbl">Livreur</div><div class="info-val">${c.livreur?c.livreur.nom:'En attente'}</div></div></div>
+        <div class="info-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div><div class="info-lbl">Date</div><div class="info-val">${fmtDate(c.createdAt)}</div></div></div>
+        ${c.montant?`<div class="info-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><div><div class="info-lbl">Valeur</div><div class="info-val">${parseInt(c.montant).toLocaleString('fr')} FCFA</div></div></div>`:''}
       </div>
-      <div class="timeline">
-        <div class="tl-title">Progression de la livraison</div>
-        ${tlSteps.map((s, i) => {
-          const isDone = done.includes(i);
-          const isActive = !isDone && done.includes(i - 1) && c.statut !== 'ANNULE';
-          return `<div class="tl-item">
-            <div class="tl-dot ${isDone ? 'done' : isActive ? 'active' : ''}">
-              <svg viewBox="0 0 24 24">${isDone ? '<polyline points="20 6 9 17 4 12"/>' : isActive ? '<circle cx="12" cy="12" r="3"/>' : '<circle cx="12" cy="12" r="3" opacity=".3"/>'}</svg>
-            </div>
-            <div class="tl-info">
-              <h4 style="color:${isDone || isActive ? 'var(--text)' : 'var(--text3)'}">${s.label}</h4>
-              <p>${s.desc}</p>
-            </div>
-          </div>`;
-        }).join('')}
+      <div class="journey">
+        <div class="journey-title">Progression de votre livraison</div>
+        ${steps.map((s,i)=>{const isDone=done.includes(i);const isActive=!isDone&&done.includes(i-1)&&c.statut!=='ANNULE';return`<div class="journey-item"><div class="journey-dot ${isDone?'done':isActive?'active':''}"><svg viewBox="0 0 24 24">${isDone?'<polyline points="20 6 9 17 4 12"/>':`<circle cx="12" cy="12" r="3"/>`}</svg></div><div class="journey-info ${isDone||isActive?'':'inactive'}"><h4>${s.l}</h4><p>${s.d}</p></div></div>`;}).join('')}
       </div>
     </div>`;
-  } catch {
-    btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" stroke="#fff" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Rechercher';
-    resultEl.innerHTML = `<div class="not-found">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <p style="color:var(--text2);">Impossible de joindre le serveur.</p>
-      <p style="color:var(--text3);font-size:12px;margin-top:4px;">Verifiez que le backend est demarre sur le port 5000.</p>
-    </div>`;
-  }
+  }catch{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Rechercher';resultEl.innerHTML=`<div class="not-found"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p style="font-weight:800;color:var(--dark);">Serveur inaccessible</p><p style="color:var(--text3);font-size:13px;margin-top:4px;">Verifiez votre connexion internet.</p></div>`;}
 }
-
-// ─── AUTH ─────────────────────────────────────────────────
-async function doLogin() {
-  const btn = document.getElementById('login-btn');
-  const errEl = document.getElementById('login-err');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;margin-right:8px;"></div>Connexion...';
-  errEl.style.display = 'none';
-
-  try {
-    const data = await api('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email: document.getElementById('login-email').value, password: document.getElementById('login-pwd').value }),
-    });
-    if (data.success) {
-      authToken = data.token;
-      localStorage.setItem('lp_token', authToken);
-      document.getElementById('admin-nav-btn').textContent = 'Dashboard';
-      navigate('admin');
-      loadAdminData();
-    } else {
-      errEl.textContent = data.message || 'Identifiants incorrects.';
-      errEl.style.display = 'block';
-    }
-  } catch {
-    errEl.textContent = 'Serveur inaccessible. Verifiez que le backend est demarre.';
-    errEl.style.display = 'block';
-  }
-  btn.disabled = false;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" fill="none" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Se connecter';
+async function doLogin(){
+  const btn=document.getElementById('login-btn'),errEl=document.getElementById('login-err');
+  btn.disabled=true;errEl.style.display='none';
+  try{const d=await api('/auth/login',{method:'POST',body:JSON.stringify({email:document.getElementById('login-email').value,password:document.getElementById('login-pwd').value})});if(d.success){authToken=d.token;localStorage.setItem('lp_token',authToken);document.getElementById('admin-nav-btn').textContent='Dashboard';navigate('admin');loadAdminData();}else{errEl.textContent=d.message||'Identifiants incorrects.';errEl.style.display='block';}}
+  catch{errEl.textContent='Serveur inaccessible.';errEl.style.display='block';}
+  btn.disabled=false;
 }
-
-function doLogout() {
-  authToken = null;
-  localStorage.removeItem('lp_token');
-  document.getElementById('admin-nav-btn').textContent = 'Admin';
-  navigate('home');
+function doLogout(){authToken=null;localStorage.removeItem('lp_token');document.getElementById('admin-nav-btn').textContent='Devenir Livreur';navigate('home');}
+function adminNav(view){currentAdminView=view;['dashboard','orders','drivers'].forEach(v=>{document.getElementById('view-'+v).style.display=v===view?'':'none';document.getElementById('sb-'+v).className='sb-item'+(v===view?' active':'');});if(view==='dashboard'){loadStats();loadDashOrders();}if(view==='orders')loadOrders();if(view==='drivers')loadDrivers();}
+function loadAdminData(){adminNav('dashboard');}
+async function loadStats(){
+  try{const d=await api('/commandes/admin/stats');if(!d.success)return;const s=d.data;
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-icon" style="background:var(--orange-light);color:var(--orange)"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg></div><div class="stat-val" style="color:var(--orange)">${s.total}</div><div class="stat-lbl">Total commandes</div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#fef3c7;color:#92400e"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-val" style="color:#92400e">${s.enAttente}</div><div class="stat-lbl">En attente</div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#dbeafe;color:#1e40af"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg></div><div class="stat-val" style="color:#1e40af">${s.enCours}</div><div class="stat-lbl">En cours</div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#dcfce7;color:#166534"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-val" style="color:#166534">${s.livres}</div><div class="stat-lbl">Livrees</div></div>
+  `;}catch{document.getElementById('stats-grid').innerHTML='<p style="color:var(--text3);padding:16px;grid-column:1/-1;">Erreur de chargement.</p>';}
 }
-
-// ─── ADMIN NAVIGATION ─────────────────────────────────────
-function adminNav(view) {
-  currentAdminView = view;
-  ['dashboard', 'orders', 'drivers'].forEach(v => {
-    document.getElementById('view-' + v).style.display = v === view ? '' : 'none';
-    document.getElementById('sb-' + v).className = 'sb-item' + (v === view ? ' active' : '');
-  });
-  if (view === 'dashboard') { loadStats(); loadDashOrders(); }
-  if (view === 'orders') loadOrders();
-  if (view === 'drivers') loadDrivers();
-}
-
-function loadAdminData() {
-  adminNav('dashboard');
-}
-
-// ─── LOAD STATS ─────────────────────────────────────────────
-async function loadStats() {
-  try {
-    const data = await api('/commandes/admin/stats');
-    if (!data.success) return;
-    const s = data.data;
-    document.getElementById('stats-grid').innerHTML = `
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(255,107,0,.1);color:var(--orange)"><svg viewBox="0 0 24 24"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/></svg></div><div class="stat-val" style="color:var(--orange)">${s.total}</div><div class="stat-lbl">Total commandes</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(251,191,36,.1);color:#fbbf24"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-val" style="color:#fbbf24">${s.enAttente}</div><div class="stat-lbl">En attente</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(59,130,246,.1);color:#60a5fa"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="stat-val" style="color:#60a5fa">${s.enCours}</div><div class="stat-lbl">En cours</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(34,197,94,.1);color:#4ade80"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-val" style="color:#4ade80">${s.livres}</div><div class="stat-lbl">Livrees</div></div>
-    `;
-  } catch (e) {
-    document.getElementById('stats-grid').innerHTML = '<p style="color:var(--text3);padding:16px;grid-column:1/-1;">Erreur de chargement des stats.</p>';
-  }
-}
-
-async function loadDashOrders() {
-  try {
-    const data = await api('/commandes?limit=5');
-    if (!data.success) return;
-    const tbody = document.getElementById('dash-orders-tbody');
-    if (!data.data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">Aucune commande.</td></tr>'; return; }
-    tbody.innerHTML = data.data.map(o => `
-      <tr>
-        <td style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:13px;">${o.id.slice(0,12)}...</td>
-        <td>${o.nomClient}</td>
-        <td>${o.produit}</td>
-        <td>${statusBadge(o.statut)}</td>
-        <td>${o.livreur ? o.livreur.nom : '<span style="color:var(--text3)">Non assigne</span>'}</td>
-        <td>${fmtDate(o.createdAt)}</td>
-      </tr>`).join('');
-  } catch {}
-}
-
-// ─── LOAD ORDERS ─────────────────────────────────────────────
-async function loadOrders() {
-  document.getElementById('orders-tbody').innerHTML = '<tr><td colspan="9" class="loading"><div class="spinner"></div>Chargement...</td></tr>';
-  try {
-    const data = await api('/commandes?limit=50');
-    if (!data.success) { toast('Erreur chargement commandes', true); return; }
-    document.getElementById('orders-count').textContent = data.meta.total + ' commandes';
-    const tbody = document.getElementById('orders-tbody');
-    if (!data.data.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px;">Aucune commande.</td></tr>'; return; }
-    tbody.innerHTML = data.data.map(o => `
-      <tr>
-        <td title="${o.id}" style="color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:11px;cursor:pointer;" onclick="navigator.clipboard&&navigator.clipboard.writeText('${o.id}')">${o.id.slice(0,14)}…</td>
-        <td>${o.nomClient}</td>
-        <td style="white-space:nowrap;">${o.telephone}</td>
-        <td>${o.produit}</td>
-        <td>${o.montant ? parseInt(o.montant).toLocaleString('fr') + ' F' : '—'}</td>
-        <td>${statusBadge(o.statut)}</td>
-        <td>${o.livreur ? o.livreur.nom : '<span style="color:var(--text3)">—</span>'}</td>
-        <td style="white-space:nowrap;">${fmtDate(o.createdAt)}</td>
-        <td>
-          <div class="td-actions">
-            <button class="act act-assign" title="Assigner livreur" onclick="openAssign('${o.id}')"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg></button>
-            <button class="act act-edit" title="Changer statut" onclick="openStatus('${o.id}','${o.statut}')"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
-            <button class="act act-del" title="Supprimer" onclick="deleteOrder('${o.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
-          </div>
-        </td>
-      </tr>`).join('');
-  } catch { toast('Impossible de joindre le serveur.', true); }
-}
-
-// ─── LOAD DRIVERS ─────────────────────────────────────────────
-async function loadDrivers() {
-  document.getElementById('drivers-grid').innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
-  try {
-    const data = await api('/livreurs');
-    if (!data.success) return;
-    const grid = document.getElementById('drivers-grid');
-    if (!data.data.length) { grid.innerHTML = '<p style="color:var(--text3);">Aucun livreur enregistre.</p>'; return; }
-    grid.innerHTML = data.data.map(d => `
-      <div class="driver-card">
-        <div class="d-avatar">${initials(d.nom)}</div>
-        <div class="d-name">${d.nom}</div>
-        <div class="d-phone">${d.telephone}</div>
-        <span class="avail ${d.disponible ? 'avail-y' : 'avail-n'}">
-          <span class="avail-dot" style="background:${d.disponible ? 'var(--green)' : 'var(--red)'};border-radius:50%;width:5px;height:5px;display:inline-block;"></span>
-          ${d.disponible ? 'Disponible' : 'En livraison'}
-        </span>
-        <div class="d-footer">
-          <div class="d-stat"><span>Livraisons</span><br><strong>${d._count ? d._count.commandes : '—'}</strong></div>
-          <div class="d-actions">
-            <button class="act act-edit" title="Toggler disponibilite" onclick="toggleDriver(${d.id},${d.disponible})"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
-            <button class="act act-del" title="Supprimer" onclick="deleteDriver(${d.id})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
-          </div>
-        </div>
-      </div>`).join('');
-  } catch { toast('Impossible de joindre le serveur.', true); }
-}
-
-// ─── ASSIGN DRIVER ─────────────────────────────────────────────
-async function openAssign(orderId) {
-  selectedOrderId = orderId;
-  document.getElementById('assign-order-id').textContent = orderId.slice(0, 14) + '…';
-  document.getElementById('assign-drivers-list').innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
-  openModal('modal-assign');
-
-  try {
-    const data = await api('/livreurs/disponibles');
-    if (!data.data.length) {
-      document.getElementById('assign-drivers-list').innerHTML = '<p style="color:var(--text3);text-align:center;padding:20px;">Aucun livreur disponible pour le moment.</p>';
-      return;
-    }
-    document.getElementById('assign-drivers-list').innerHTML = data.data.map(d => `
-      <div class="driver-opt" onclick="confirmAssign(${d.id},'${d.nom}')">
-        <div class="driver-opt-info">
-          <div class="d-avatar" style="width:36px;height:36px;font-size:14px;">${initials(d.nom)}</div>
-          <div><div style="font-weight:600;font-size:13px;">${d.nom}</div><div style="font-size:11px;color:var(--text3);">${d.telephone}</div></div>
-        </div>
-        <button class="btn btn-success btn-sm">Assigner</button>
-      </div>`).join('');
-  } catch { document.getElementById('assign-drivers-list').innerHTML = '<p style="color:var(--red);">Erreur de chargement.</p>'; }
-}
-
-async function confirmAssign(livreurId, livreurNom) {
-  try {
-    const data = await api('/commandes/' + selectedOrderId + '/assigner', {
-      method: 'PATCH',
-      body: JSON.stringify({ livreurId }),
-    });
-    if (data.success) {
-      toast(livreurNom + ' assigne avec succes. Statut → En cours.');
-      closeModal('modal-assign');
-      loadOrders();
-      if (currentAdminView === 'dashboard') { loadStats(); loadDashOrders(); }
-    } else { toast(data.message || 'Erreur assignation.', true); }
-  } catch { toast('Erreur serveur.', true); }
-}
-
-// ─── STATUS ─────────────────────────────────────────────────
-function openStatus(orderId, currentStatus) {
-  selectedOrderForStatus = orderId;
-  document.getElementById('status-order-id').textContent = orderId.slice(0, 14) + '…';
-  const statuts = [
-    ['EN_ATTENTE', 'En attente'],
-    ['EN_COURS', 'En cours'],
-    ['LIVRE', 'Livre'],
-    ['ANNULE', 'Annule'],
-  ];
-  document.getElementById('status-options').innerHTML = statuts.map(([val, label]) => `
-    <div class="driver-opt" style="margin-bottom:8px;${val === currentStatus ? 'border-color:var(--orange);' : ''}" onclick="confirmStatus('${val}')">
-      <div>${statusBadge(val)} <span style="font-size:13px;margin-left:8px;">${label}</span></div>
-      ${val === currentStatus ? '<span style="font-size:11px;color:var(--text3);">Actuel</span>' : ''}
-    </div>`).join('');
-  openModal('modal-status');
-}
-
-async function confirmStatus(statut) {
-  try {
-    const data = await api('/commandes/' + selectedOrderForStatus + '/statut', {
-      method: 'PATCH',
-      body: JSON.stringify({ statut }),
-    });
-    if (data.success) {
-      toast('Statut mis a jour : ' + statut.replace('_', ' '));
-      closeModal('modal-status');
-      loadOrders();
-      if (currentAdminView === 'dashboard') { loadStats(); loadDashOrders(); }
-    } else { toast(data.message || 'Erreur.', true); }
-  } catch { toast('Erreur serveur.', true); }
-}
-
-// ─── DELETE ORDER ─────────────────────────────────────────────
-async function deleteOrder(id) {
-  if (!confirm('Supprimer cette commande ?')) return;
-  try {
-    const data = await api('/commandes/' + id, { method: 'DELETE' });
-    if (data.success) { toast('Commande supprimee.'); loadOrders(); if (currentAdminView === 'dashboard') { loadStats(); loadDashOrders(); } }
-    else toast(data.message, true);
-  } catch { toast('Erreur serveur.', true); }
-}
-
-// ─── DELETE DRIVER ─────────────────────────────────────────────
-async function deleteDriver(id) {
-  if (!confirm('Supprimer ce livreur ?')) return;
-  try {
-    const data = await api('/livreurs/' + id, { method: 'DELETE' });
-    if (data.success) { toast('Livreur supprime.'); loadDrivers(); }
-    else toast(data.message, true);
-  } catch { toast('Erreur serveur.', true); }
-}
-
-async function toggleDriver(id, current) {
-  try {
-    const data = await api('/livreurs/' + id, {
-      method: 'PATCH',
-      body: JSON.stringify({ disponible: !current }),
-    });
-    if (data.success) { toast('Disponibilite mise a jour.'); loadDrivers(); }
-  } catch { toast('Erreur.', true); }
-}
-
-// ─── ADD DRIVER ─────────────────────────────────────────────
-function openAddDriver() { openModal('modal-add-driver'); document.getElementById('nd-nom').value = ''; document.getElementById('nd-tel').value = ''; }
-
-async function submitAddDriver() {
-  const nom = document.getElementById('nd-nom').value.trim();
-  const tel = document.getElementById('nd-tel').value.trim();
-  if (!nom || !tel) { toast('Nom et telephone requis.', true); return; }
-  const btn = document.getElementById('add-driver-btn');
-  btn.disabled = true;
-  try {
-    const fd = new FormData();
-    fd.append('nom', nom);
-    fd.append('telephone', tel);
-    const res = await fetch(API + '/livreurs', { method: 'POST', headers: { Authorization: 'Bearer ' + authToken }, body: fd });
-    const data = await res.json();
-    if (data.success) { toast('Livreur ' + nom + ' ajoute.'); closeModal('modal-add-driver'); loadDrivers(); }
-    else toast(data.message, true);
-  } catch { toast('Erreur serveur.', true); }
-  btn.disabled = false;
-}
-
-// ─── CLOSE MODALS ON OVERLAY CLICK ─────────────────────────
-document.querySelectorAll('.overlay').forEach(o => {
-  o.addEventListener('click', e => { if (e.target === o) o.classList.add('hidden'); });
-});
-
-// ─── INIT ─────────────────────────────────────────────────
-(function init() {
-  if (authToken) {
-    document.getElementById('admin-nav-btn').textContent = 'Dashboard';
-  }
-  // État initial de la page commande
-  document.getElementById('service-picker').style.display = 'block';
-  document.getElementById('order-form-wrap').style.display = 'none';
-  document.getElementById('order-success').style.display = 'none';
+async function loadDashOrders(){try{const d=await api('/commandes?limit=5');if(!d.success)return;const tb=document.getElementById('dash-orders-tbody');if(!d.data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;font-weight:600;">Aucune commande.</td></tr>';return;}tb.innerHTML=d.data.map(o=>`<tr><td style="color:var(--orange);font-size:11px;">${o.id.slice(0,14)}…</td><td>${o.nomClient}</td><td>${o.produit}</td><td>${statusBadge(o.statut)}</td><td>${o.livreur?o.livreur.nom:'<span style="color:var(--text3)">—</span>'}</td><td>${fmtDate(o.createdAt)}</td></tr>`).join('');}catch{}}
+async function loadOrders(){document.getElementById('orders-tbody').innerHTML='<tr><td colspan="9" class="loading"><div class="spinner"></div>Chargement...</td></tr>';try{const d=await api('/commandes?limit=50');if(!d.success)return;document.getElementById('orders-count').textContent=d.meta.total+' commandes';const tb=document.getElementById('orders-tbody');if(!d.data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px;font-weight:600;">Aucune commande.</td></tr>';return;}tb.innerHTML=d.data.map(o=>`<tr><td title="${o.id}" style="color:var(--orange);font-size:11px;cursor:pointer;" onclick="navigator.clipboard&&navigator.clipboard.writeText('${o.id}')">${o.id.slice(0,14)}…</td><td>${o.nomClient}</td><td style="white-space:nowrap;">${o.telephone}</td><td>${o.produit}</td><td>${o.montant?parseInt(o.montant).toLocaleString('fr')+' F':'—'}</td><td>${statusBadge(o.statut)}</td><td>${o.livreur?o.livreur.nom:'<span style="color:var(--text3)">—</span>'}</td><td style="white-space:nowrap;">${fmtDate(o.createdAt)}</td><td><div class="td-actions"><button class="act act-assign" onclick="openAssign('${o.id}')"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg></button><button class="act act-edit" onclick="openStatus('${o.id}','${o.statut}')"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button><button class="act act-del" onclick="deleteOrder('${o.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></td></tr>`).join('');}catch{toast('Erreur serveur.',true);}}
+async function loadDrivers(){document.getElementById('drivers-grid').innerHTML='<div class="loading"><div class="spinner"></div>Chargement...</div>';try{const d=await api('/livreurs');if(!d.success)return;const g=document.getElementById('drivers-grid');if(!d.data.length){g.innerHTML='<p style="color:var(--text3);font-weight:600;">Aucun livreur.</p>';return;}g.innerHTML=d.data.map(d=>`<div class="driver-card"><div class="d-avatar">${initials(d.nom)}</div><div class="d-name">${d.nom}</div><div class="d-phone">${d.telephone}</div><span class="avail ${d.disponible?'avail-y':'avail-n'}"><span class="avail-dot" style="background:${d.disponible?'#16a34a':'#dc2626'}"></span>${d.disponible?'Disponible':'En livraison'}</span><div class="d-footer"><div class="d-stat">Livraisons<br><strong>${d._count?d._count.commandes:'—'}</strong></div><div class="d-actions"><button class="act act-edit" onclick="toggleDriver(${d.id},${d.disponible})"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button><button class="act act-del" onclick="deleteDriver(${d.id})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></div></div>`).join('');}catch{toast('Erreur serveur.',true);}}
+async function openAssign(orderId){selectedOrderId=orderId;document.getElementById('assign-order-id').textContent=orderId.slice(0,14)+'…';document.getElementById('assign-drivers-list').innerHTML='<div class="loading"><div class="spinner"></div>Chargement...</div>';openModal('modal-assign');try{const d=await api('/livreurs/disponibles');if(!d.data.length){document.getElementById('assign-drivers-list').innerHTML='<p style="color:var(--text3);text-align:center;padding:20px;font-weight:600;">Aucun livreur disponible.</p>';return;}document.getElementById('assign-drivers-list').innerHTML=d.data.map(l=>`<div class="driver-opt" onclick="confirmAssign(${l.id},'${l.nom}')"><div class="driver-opt-info"><div class="d-avatar" style="width:38px;height:38px;font-size:13px;">${initials(l.nom)}</div><div><div style="font-weight:800;font-size:13px;">${l.nom}</div><div style="font-size:11px;color:var(--text3);font-weight:600;">${l.telephone}</div></div></div><button class="btn btn-primary btn-sm">Assigner</button></div>`).join('');}catch{document.getElementById('assign-drivers-list').innerHTML='<p style="color:var(--red);">Erreur.</p>';}}
+async function confirmAssign(livreurId,nom){try{const d=await api('/commandes/'+selectedOrderId+'/assigner',{method:'PATCH',body:JSON.stringify({livreurId})});if(d.success){toast(nom+' assigne avec succes.');closeModal('modal-assign');loadOrders();if(currentAdminView==='dashboard'){loadStats();loadDashOrders();}}else toast(d.message||'Erreur.',true);}catch{toast('Erreur serveur.',true);}}
+function openStatus(orderId,current){selectedOrderForStatus=orderId;document.getElementById('status-order-id').textContent=orderId.slice(0,14)+'…';const statuts=[['EN_ATTENTE','En attente'],['EN_COURS','En cours'],['LIVRE','Livre'],['ANNULE','Annule']];document.getElementById('status-options').innerHTML=statuts.map(([v,l])=>`<div class="driver-opt" style="margin-bottom:8px;${v===current?'border-color:var(--orange);background:var(--orange-light);':''}" onclick="confirmStatus('${v}')"><div>${statusBadge(v)}<span style="font-size:13px;margin-left:8px;font-weight:700;">${l}</span></div>${v===current?'<span style="font-size:11px;color:var(--orange);font-weight:800;">Actuel</span>':''}</div>`).join('');openModal('modal-status');}
+async function confirmStatus(statut){try{const d=await api('/commandes/'+selectedOrderForStatus+'/statut',{method:'PATCH',body:JSON.stringify({statut})});if(d.success){toast('Statut mis a jour.');closeModal('modal-status');loadOrders();if(currentAdminView==='dashboard'){loadStats();loadDashOrders();}}else toast(d.message||'Erreur.',true);}catch{toast('Erreur serveur.',true);}}
+async function deleteOrder(id){if(!confirm('Supprimer cette commande ?'))return;try{const d=await api('/commandes/'+id,{method:'DELETE'});if(d.success){toast('Commande supprimee.');loadOrders();if(currentAdminView==='dashboard'){loadStats();loadDashOrders();}}else toast(d.message,true);}catch{toast('Erreur.',true);}}
+async function deleteDriver(id){if(!confirm('Supprimer ce livreur ?'))return;try{const d=await api('/livreurs/'+id,{method:'DELETE'});if(d.success){toast('Livreur supprime.');loadDrivers();}else toast(d.message,true);}catch{toast('Erreur.',true);}}
+async function toggleDriver(id,current){try{const d=await api('/livreurs/'+id,{method:'PATCH',body:JSON.stringify({disponible:!current})});if(d.success){toast('Disponibilite mise a jour.');loadDrivers();}}catch{toast('Erreur.',true);}}
+function openAddDriver(){openModal('modal-add-driver');document.getElementById('nd-nom').value='';document.getElementById('nd-tel').value='';}
+async function submitAddDriver(){const nom=document.getElementById('nd-nom').value.trim(),tel=document.getElementById('nd-tel').value.trim();if(!nom||!tel){toast('Nom et telephone requis.',true);return;}const btn=document.getElementById('add-driver-btn');btn.disabled=true;try{const fd=new FormData();fd.append('nom',nom);fd.append('telephone',tel);const r=await fetch(API+'/livreurs',{method:'POST',headers:{Authorization:'Bearer '+authToken},body:fd});const d=await r.json();if(d.success){toast(nom+' ajoute.');closeModal('modal-add-driver');loadDrivers();}else toast(d.message,true);}catch{toast('Erreur.',true);}btn.disabled=false;}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.add('hidden');}));
+(function init(){
+  if(authToken)document.getElementById('admin-nav-btn').textContent='Dashboard';
+  document.getElementById('service-picker').style.display='block';
+  document.getElementById('order-form-wrap').style.display='none';
+  document.getElementById('order-success').style.display='none';
   navigate('home');
 })();
 </script>
