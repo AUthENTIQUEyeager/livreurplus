@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply bg-paper text-ink font-body;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+  :focus-visible {
+    outline: 2px solid #0F7B6C;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-route px-5 py-3
+      font-display text-sm font-semibold text-white transition-colors
+      hover:bg-route-dark active:bg-route-dark disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-5 py-3
+      font-display text-sm font-semibold text-ink transition-colors
+      hover:bg-mist disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-white shadow-card;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink
+      placeholder:text-ink/40 focus:border-route outline-none transition-colors;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+.leaflet-container {
+  font-family: var(--font-inter), sans-serif;
+  border-radius: 1rem;
+}
+
+/* Pin livreur animé : point plein + halo qui pulse, signature visuelle du produit */
+.livreur-pin {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+.livreur-pin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #0F7B6C;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(18,20,28,0.3);
+  z-index: 1;
+}
+.livreur-pin::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 9999px;
+  background: #12A38E;
+  opacity: 0.5;
+  animation: pulse-ring 2s cubic-bezier(0.2,0.6,0.4,1) infinite;
+}
