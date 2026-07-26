@@ -18,35 +18,45 @@ export async function updateSession(request: NextRequest) {
     return response;
   }
 
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet: CookieToSet[]) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
       },
-      setAll(cookiesToSet: CookieToSet[]) {
-        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options)
-        );
-      },
-    },
-  });
+    });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  const path = request.nextUrl.pathname;
-  const protectedPaths = ["/commercant", "/livreur"];
-  const isProtected = protectedPaths.some((p) => path.startsWith(p));
+    const path = request.nextUrl.pathname;
+    const protectedPaths = ["/commercant", "/livreur"];
+    const isProtected = protectedPaths.some((p) => path.startsWith(p));
 
-  if (isProtected && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("next", path);
-    return NextResponse.redirect(url);
+    if (isProtected && !user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("next", path);
+      return NextResponse.redirect(url);
+    }
+
+    return response;
+  } catch (err) {
+    console.error(
+      "[middleware] Erreur lors de la création du client Supabase — vérifie le FORMAT des variables (URL complète avec https://, pas de guillemets, pas d'espace) :",
+      err instanceof Error ? err.message : err,
+      "| URL reçue (longueur):", supabaseUrl.length,
+      "| Anon key reçue (longueur):", supabaseAnonKey.length
+    );
+    return response;
   }
-
-  return response;
 }
