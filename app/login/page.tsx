@@ -55,10 +55,22 @@ function LoginForm() {
       });
       setChargement(false);
       if (error) return setErreur(error.message);
-      if (!data.session) {
+
+      // Supabase renvoie un utilisateur "fantôme" (identities vide) si l'email
+      // existe déjà, sans erreur explicite — protection anti-énumération de comptes.
+      if (data.user && data.user.identities && data.user.identities.length === 0) {
+        return setErreur("Un compte existe déjà avec cet email. Connecte-toi plutôt.");
+      }
+
+      if (!data.session || !data.user) {
         setMessageInfo("Compte créé. Vérifie ta boîte mail pour confirmer ton adresse avant de te connecter.");
         return;
       }
+
+      // Filet de sécurité : force le rôle choisi sur le profil, même si le
+      // trigger n'a pas pu le faire (ex. compte déjà existant d'un essai précédent).
+      await supabase.from("profiles").update({ role, nom }).eq("id", data.user.id);
+
       router.push(next);
       router.refresh();
     } else {
