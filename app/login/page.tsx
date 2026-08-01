@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Role } from "@/lib/types";
 
@@ -14,7 +14,6 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") ?? "/";
 
@@ -71,8 +70,9 @@ function LoginForm() {
       // trigger n'a pas pu le faire (ex. compte déjà existant d'un essai précédent).
       await supabase.from("profiles").update({ role, nom }).eq("id", data.user.id);
 
-      router.push(next);
-      router.refresh();
+      // Rechargement complet (pas router.push/refresh) : évite que Next.js serve
+      // une version en cache de la page visitée avant la connexion.
+      window.location.href = next;
     } else {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -80,8 +80,7 @@ function LoginForm() {
       });
       setChargement(false);
       if (error) return setErreur("Email ou mot de passe incorrect.");
-      router.push(next);
-      router.refresh();
+      window.location.href = next;
     }
   }
 
