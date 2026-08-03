@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase/client";
 import type { Commande, Commerce, Produit } from "@/lib/types";
 import StatusBadge from "@/components/StatusBadge";
+import { getTheme } from "@/lib/theme-presets";
 
 const LiveMap = dynamic(() => import("@/components/LiveMap"), { ssr: false });
 
@@ -165,10 +166,17 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
     return <p className="p-6 text-center text-sm text-ink/50">Cette boutique n&apos;existe pas ou plus.</p>;
   }
 
+  const theme = getTheme(commerce?.theme);
+  const styleTheme = {
+    "--accent": theme.accent,
+    "--accent-dark": theme.accentDark,
+    "--accent-tint": theme.accentTint,
+  } as React.CSSProperties;
+
   // Vue suivi de commande
   if (commandeEnvoyee) {
     return (
-      <main className="mx-auto min-h-screen max-w-md bg-mist px-5 py-8">
+      <main className="mx-auto min-h-screen max-w-md bg-mist px-5 py-8" style={styleTheme}>
         <div className="card p-6">
           <div className="flex items-center justify-between">
             <h1 className="font-display text-lg font-bold text-ink">Ta commande</h1>
@@ -204,17 +212,28 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <main className="min-h-screen bg-paper pb-24">
+    <main className="min-h-screen bg-paper pb-24" style={styleTheme}>
       {/* En-tête boutique */}
+      {commerce!.banniere_url && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={commerce!.banniere_url}
+          alt=""
+          className="h-32 w-full object-cover sm:h-48"
+        />
+      )}
       <div className="border-b border-line bg-white px-5 py-8 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-route-tint">
-          <span className="font-display text-lg font-bold text-route-dark">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent-tint)]">
+          <span className="font-display text-lg font-bold text-[var(--accent-dark)]">
             {commerce!.nom_boutique.slice(0, 2).toUpperCase()}
           </span>
         </div>
         <h1 className="mt-3 font-display text-xl font-bold text-ink">{commerce!.nom_boutique}</h1>
         {commerce!.description && <p className="mt-1 text-sm text-ink/60">{commerce!.description}</p>}
         {commerce!.adresse && <p className="mt-1 text-xs text-ink/40">{commerce!.adresse}</p>}
+        {commerce!.bio && (
+          <p className="mx-auto mt-3 max-w-md text-sm text-ink/70">{commerce!.bio}</p>
+        )}
       </div>
 
       {/* Catalogue */}
@@ -235,7 +254,7 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
                   <h3 className="font-display text-sm font-bold text-ink">{p.nom}</h3>
                   <p className="mt-1 line-clamp-2 text-xs text-ink/50">{p.description}</p>
                   <div className="mt-3 flex items-center justify-between">
-                    <span className="font-display text-sm font-bold text-route-dark">
+                    <span className="font-display text-sm font-bold text-[var(--accent-dark)]">
                       {p.prix.toLocaleString("fr-FR")} F
                     </span>
                     {panier[p.id] ? (
@@ -249,13 +268,16 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
                         <span className="w-4 text-center text-sm font-semibold">{panier[p.id].quantite}</span>
                         <button
                           onClick={() => ajouterAuPanier(p)}
-                          className="flex h-7 w-7 items-center justify-center rounded-lg bg-route font-bold text-white"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--accent)] font-bold text-white"
                         >
                           +
                         </button>
                       </div>
                     ) : (
-                      <button onClick={() => ajouterAuPanier(p)} className="btn-primary !py-1.5 !px-3 text-xs">
+                      <button
+                        onClick={() => ajouterAuPanier(p)}
+                        className="btn-primary !bg-[var(--accent)] !py-1.5 !px-3 text-xs hover:!bg-[var(--accent-dark)]"
+                      >
                         Ajouter
                       </button>
                     )}
@@ -325,7 +347,7 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
               <div>
                 <label className="label">Position de livraison</label>
                 {localisation === "ok" && position ? (
-                  <p className="rounded-lg bg-route-tint px-3 py-2 text-sm text-route-dark">
+                  <p className="rounded-lg bg-[var(--accent-tint)] px-3 py-2 text-sm text-[var(--accent-dark)]">
                     Position enregistrée ✓
                   </p>
                 ) : (
@@ -346,7 +368,11 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
                 <button type="button" onClick={() => setPanierOuvert(false)} className="btn-secondary flex-1">
                   Retour
                 </button>
-                <button type="submit" disabled={!position || envoi} className="btn-primary flex-1">
+                <button
+                  type="submit"
+                  disabled={!position || envoi}
+                  className="btn-primary flex-1 !bg-[var(--accent)] hover:!bg-[var(--accent-dark)]"
+                >
                   {envoi ? "Envoi…" : "Confirmer la commande"}
                 </button>
               </div>

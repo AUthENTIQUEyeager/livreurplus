@@ -72,6 +72,9 @@ create table public.commerces (
   logo_url text,
   adresse text default '',
   actif boolean not null default true,
+  banniere_url text,
+  bio text,
+  theme text not null default 'route',
   created_at timestamptz not null default now()
 );
 

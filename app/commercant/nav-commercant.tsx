@@ -8,6 +8,7 @@ const LIENS = [
   { href: "/commercant/dashboard", label: "Tableau de bord" },
   { href: "/commercant/catalogue", label: "Catalogue" },
   { href: "/commercant/commandes", label: "Commandes" },
+  { href: "/commercant/personnalisation", label: "Personnaliser" },
 ];
 
 export default function NavCommercant({ nom }: { nom: string }) {

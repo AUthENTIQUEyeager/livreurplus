@@ -27,6 +27,9 @@ export interface Commerce {
   logo_url: string | null;
   adresse: string;
   actif: boolean;
+  banniere_url: string | null;
+  bio: string | null;
+  theme: string;
   created_at: string;
 }
 

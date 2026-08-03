@@ -168,9 +168,14 @@ export default function DashboardPage() {
             </Link>
           </p>
         </div>
-        <Link href="/commercant/catalogue" className="btn-primary">
-          Gérer le catalogue
-        </Link>
+        <div className="flex gap-3">
+          <Link href="/commercant/personnalisation" className="btn-secondary">
+            Personnaliser
+          </Link>
+          <Link href="/commercant/catalogue" className="btn-primary">
+            Gérer le catalogue
+          </Link>
+        </div>
       </div>
 
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-5">
