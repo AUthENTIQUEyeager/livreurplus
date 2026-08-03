@@ -14,6 +14,8 @@ export default function PersonnalisationPage() {
   const [banniereUrl, setBanniereUrl] = useState("");
   const [bio, setBio] = useState("");
   const [theme, setTheme] = useState("route");
+  const [userId, setUserId] = useState<string | null>(null);
+  const [uploadEnCours, setUploadEnCours] = useState(false);
 
   const [enregistrement, setEnregistrement] = useState(false);
   const [confirme, setConfirme] = useState(false);
@@ -25,6 +27,7 @@ export default function PersonnalisationPage() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
+      setUserId(user.id);
 
       const { data: com } = await supabase
         .from("commerces")
@@ -41,6 +44,44 @@ export default function PersonnalisationPage() {
       setChargement(false);
     })();
   }, []);
+
+  async function televerserBanniere(e: React.ChangeEvent<HTMLInputElement>) {
+    const fichier = e.target.files?.[0];
+    e.target.value = ""; // permet de re-sélectionner le même fichier ensuite
+    if (!fichier || !userId) return;
+
+    if (!fichier.type.startsWith("image/")) {
+      setErreur("Le fichier doit être une image.");
+      return;
+    }
+    if (fichier.size > 5 * 1024 * 1024) {
+      setErreur("Image trop lourde (5 Mo max).");
+      return;
+    }
+
+    setUploadEnCours(true);
+    setErreur(null);
+
+    const extension = fichier.name.split(".").pop() || "jpg";
+    const chemin = `${userId}/banniere-${Date.now()}.${extension}`;
+
+    const { error: erreurUpload } = await supabase.storage
+      .from("banners")
+      .upload(chemin, fichier, { upsert: true, contentType: fichier.type });
+
+    if (erreurUpload) {
+      setUploadEnCours(false);
+      setErreur("Échec de l'envoi de l'image : " + erreurUpload.message);
+      return;
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("banners").getPublicUrl(chemin);
+
+    setBanniereUrl(publicUrl);
+    setUploadEnCours(false);
+  }
 
   async function enregistrer(e: React.FormEvent) {
     e.preventDefault();
@@ -122,15 +163,40 @@ export default function PersonnalisationPage() {
         </div>
 
         <div>
-          <label className="label">Bannière (URL image)</label>
+          <label className="label">Bannière</label>
+          <div className="flex items-center gap-3">
+            <label className="btn-secondary cursor-pointer !py-2 !px-4 text-xs">
+              {uploadEnCours ? "Envoi…" : "Choisir une image"}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={televerserBanniere}
+                disabled={uploadEnCours}
+                className="hidden"
+              />
+            </label>
+            {banniereUrl && (
+              <button
+                type="button"
+                onClick={() => setBanniereUrl("")}
+                className="text-xs font-medium text-danger hover:underline"
+              >
+                Retirer
+              </button>
+            )}
+          </div>
+          <p className="mt-2 text-xs text-ink/40">
+            Ou colle directement un lien d&apos;image :
+          </p>
           <input
-            className="input"
+            className="input mt-1"
             value={banniereUrl}
             onChange={(e) => setBanniereUrl(e.target.value)}
             placeholder="https://…"
           />
           <p className="mt-1 text-xs text-ink/40">
-            Format large recommandé (ex. 1200×400). Laisse vide pour ne pas afficher de bannière.
+            Format large recommandé (ex. 1200×400). L&apos;image envoyée devient publique
+            (nécessaire pour s&apos;afficher sur ta boutique).
           </p>
         </div>
 
