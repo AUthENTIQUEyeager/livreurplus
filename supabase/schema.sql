@@ -102,6 +102,43 @@ create policy "commerces: modification par le propriétaire"
 
 
 -- ----------------------------------------------------------------------------
+-- 2bis. STORAGE — bannières boutique
+-- ----------------------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('banners', 'banners', true)
+on conflict (id) do nothing;
+
+create policy "banners: lecture publique"
+  on storage.objects for select
+  to public
+  using (bucket_id = 'banners');
+
+create policy "banners: upload par le propriétaire"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'banners'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "banners: remplacement par le propriétaire"
+  on storage.objects for update
+  to authenticated
+  using (
+    bucket_id = 'banners'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "banners: suppression par le propriétaire"
+  on storage.objects for delete
+  to authenticated
+  using (
+    bucket_id = 'banners'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+
+-- ----------------------------------------------------------------------------
 -- 3. PRODUITS (catalogue)
 -- ----------------------------------------------------------------------------
 create table public.produits (
