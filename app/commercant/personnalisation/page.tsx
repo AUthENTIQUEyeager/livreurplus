@@ -12,10 +12,11 @@ export default function PersonnalisationPage() {
   const [commerce, setCommerce] = useState<Commerce | null>(null);
 
   const [banniereUrl, setBanniereUrl] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
   const [bio, setBio] = useState("");
   const [theme, setTheme] = useState("route");
   const [userId, setUserId] = useState<string | null>(null);
-  const [uploadEnCours, setUploadEnCours] = useState(false);
+  const [uploadEnCours, setUploadEnCours] = useState<"banniere" | "logo" | null>(null);
 
   const [enregistrement, setEnregistrement] = useState(false);
   const [confirme, setConfirme] = useState(false);
@@ -38,6 +39,7 @@ export default function PersonnalisationPage() {
       if (com) {
         setCommerce(com);
         setBanniereUrl(com.banniere_url ?? "");
+        setLogoUrl(com.logo_url ?? "");
         setBio(com.bio ?? "");
         setTheme(com.theme ?? "route");
       }
@@ -45,10 +47,12 @@ export default function PersonnalisationPage() {
     })();
   }, []);
 
-  async function televerserBanniere(e: React.ChangeEvent<HTMLInputElement>) {
-    const fichier = e.target.files?.[0];
-    e.target.value = ""; // permet de re-sélectionner le même fichier ensuite
-    if (!fichier || !userId) return;
+  async function televerser(
+    fichier: File,
+    prefixe: "banniere" | "logo",
+    appliquer: (url: string) => void
+  ) {
+    if (!userId) return;
 
     if (!fichier.type.startsWith("image/")) {
       setErreur("Le fichier doit être une image.");
@@ -59,18 +63,18 @@ export default function PersonnalisationPage() {
       return;
     }
 
-    setUploadEnCours(true);
+    setUploadEnCours(prefixe);
     setErreur(null);
 
     const extension = fichier.name.split(".").pop() || "jpg";
-    const chemin = `${userId}/banniere-${Date.now()}.${extension}`;
+    const chemin = `${userId}/${prefixe}-${Date.now()}.${extension}`;
 
     const { error: erreurUpload } = await supabase.storage
       .from("banners")
       .upload(chemin, fichier, { upsert: true, contentType: fichier.type });
 
     if (erreurUpload) {
-      setUploadEnCours(false);
+      setUploadEnCours(null);
       setErreur("Échec de l'envoi de l'image : " + erreurUpload.message);
       return;
     }
@@ -79,8 +83,20 @@ export default function PersonnalisationPage() {
       data: { publicUrl },
     } = supabase.storage.from("banners").getPublicUrl(chemin);
 
-    setBanniereUrl(publicUrl);
-    setUploadEnCours(false);
+    appliquer(publicUrl);
+    setUploadEnCours(null);
+  }
+
+  function televerserBanniere(e: React.ChangeEvent<HTMLInputElement>) {
+    const fichier = e.target.files?.[0];
+    e.target.value = "";
+    if (fichier) televerser(fichier, "banniere", setBanniereUrl);
+  }
+
+  function televerserLogo(e: React.ChangeEvent<HTMLInputElement>) {
+    const fichier = e.target.files?.[0];
+    e.target.value = "";
+    if (fichier) televerser(fichier, "logo", setLogoUrl);
   }
 
   async function enregistrer(e: React.FormEvent) {
@@ -94,6 +110,7 @@ export default function PersonnalisationPage() {
       .from("commerces")
       .update({
         banniere_url: banniereUrl.trim() || null,
+        logo_url: logoUrl.trim() || null,
         bio: bio.trim() || null,
         theme,
       })
@@ -163,15 +180,58 @@ export default function PersonnalisationPage() {
         </div>
 
         <div>
+          <label className="label">Photo de profil</label>
+          <div className="flex items-center gap-3">
+            {logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={logoUrl} alt="" className="h-14 w-14 rounded-2xl object-cover" />
+            ) : (
+              <div
+                className="flex h-14 w-14 items-center justify-center rounded-2xl"
+                style={{ backgroundColor: presetActuel.accentTint }}
+              >
+                <span className="font-display text-sm font-bold" style={{ color: presetActuel.accentDark }}>
+                  {commerce.nom_boutique.slice(0, 2).toUpperCase()}
+                </span>
+              </div>
+            )}
+            <div className="flex flex-col items-start gap-1">
+              <label className="btn-secondary cursor-pointer !py-2 !px-4 text-xs">
+                {uploadEnCours === "logo" ? "Envoi…" : "Choisir une photo"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={televerserLogo}
+                  disabled={uploadEnCours !== null}
+                  className="hidden"
+                />
+              </label>
+              {logoUrl && (
+                <button
+                  type="button"
+                  onClick={() => setLogoUrl("")}
+                  className="text-xs font-medium text-danger hover:underline"
+                >
+                  Retirer
+                </button>
+              )}
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-ink/40">
+            Remplace les initiales par ton logo sur ta page publique.
+          </p>
+        </div>
+
+        <div>
           <label className="label">Bannière</label>
           <div className="flex items-center gap-3">
             <label className="btn-secondary cursor-pointer !py-2 !px-4 text-xs">
-              {uploadEnCours ? "Envoi…" : "Choisir une image"}
+              {uploadEnCours === "banniere" ? "Envoi…" : "Choisir une image"}
               <input
                 type="file"
                 accept="image/*"
                 onChange={televerserBanniere}
-                disabled={uploadEnCours}
+                disabled={uploadEnCours !== null}
                 className="hidden"
               />
             </label>
@@ -220,14 +280,19 @@ export default function PersonnalisationPage() {
               <img src={banniereUrl} alt="" className="h-24 w-full object-cover" />
             )}
             <div className="p-4 text-center">
-              <div
-                className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ backgroundColor: presetActuel.accentTint }}
-              >
-                <span className="font-display text-xs font-bold" style={{ color: presetActuel.accentDark }}>
-                  {commerce.nom_boutique.slice(0, 2).toUpperCase()}
-                </span>
-              </div>
+              {logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={logoUrl} alt="" className="mx-auto h-10 w-10 rounded-xl object-cover" />
+              ) : (
+                <div
+                  className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: presetActuel.accentTint }}
+                >
+                  <span className="font-display text-xs font-bold" style={{ color: presetActuel.accentDark }}>
+                    {commerce.nom_boutique.slice(0, 2).toUpperCase()}
+                  </span>
+                </div>
+              )}
               <p className="mt-2 font-display text-sm font-bold text-ink">{commerce.nom_boutique}</p>
               {bio && <p className="mt-1 line-clamp-2 text-xs text-ink/60">{bio}</p>}
             </div>

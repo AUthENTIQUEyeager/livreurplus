@@ -18,12 +18,15 @@ export default function CataloguePage() {
   const [imageUrl, setImageUrl] = useState("");
   const [envoi, setEnvoi] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [uploadEnCours, setUploadEnCours] = useState(false);
 
   async function charger() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return;
+    setUserId(user.id);
     const { data: com } = await supabase
       .from("commerces")
       .select("*")
@@ -44,6 +47,44 @@ export default function CataloguePage() {
   useEffect(() => {
     charger();
   }, []);
+
+  async function televerserImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const fichier = e.target.files?.[0];
+    e.target.value = "";
+    if (!fichier || !userId) return;
+
+    if (!fichier.type.startsWith("image/")) {
+      setErreur("Le fichier doit être une image.");
+      return;
+    }
+    if (fichier.size > 5 * 1024 * 1024) {
+      setErreur("Image trop lourde (5 Mo max).");
+      return;
+    }
+
+    setUploadEnCours(true);
+    setErreur(null);
+
+    const extension = fichier.name.split(".").pop() || "jpg";
+    const chemin = `${userId}/produit-${Date.now()}.${extension}`;
+
+    const { error: erreurUpload } = await supabase.storage
+      .from("products")
+      .upload(chemin, fichier, { upsert: true, contentType: fichier.type });
+
+    if (erreurUpload) {
+      setUploadEnCours(false);
+      setErreur("Échec de l'envoi de l'image : " + erreurUpload.message);
+      return;
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("products").getPublicUrl(chemin);
+
+    setImageUrl(publicUrl);
+    setUploadEnCours(false);
+  }
 
   function ouvrirCreation() {
     setEnEdition(null);
@@ -197,9 +238,37 @@ export default function CataloguePage() {
                   />
                 </div>
                 <div>
-                  <label className="label">Image (URL)</label>
-                  <input className="input" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                  <label className="label">Photo</label>
+                  <label className="btn-secondary w-full cursor-pointer !py-2.5 text-xs">
+                    {uploadEnCours ? "Envoi…" : imageUrl ? "Changer" : "Choisir une photo"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={televerserImage}
+                      disabled={uploadEnCours}
+                      className="hidden"
+                    />
+                  </label>
                 </div>
+              </div>
+
+              {imageUrl && (
+                <div className="flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={imageUrl} alt="" className="h-16 w-16 rounded-lg object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setImageUrl("")}
+                    className="text-xs font-medium text-danger hover:underline"
+                  >
+                    Retirer la photo
+                  </button>
+                </div>
+              )}
+
+              <div>
+                <label className="label">Ou coller un lien d&apos;image</label>
+                <input className="input" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
               </div>
               {erreur && <p className="rounded-lg bg-danger-tint px-3 py-2 text-sm text-danger">{erreur}</p>}
               <div className="flex gap-3 pt-2">

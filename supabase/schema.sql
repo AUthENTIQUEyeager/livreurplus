@@ -167,6 +167,43 @@ create policy "produits: le propriétaire gère son catalogue"
 
 
 -- ----------------------------------------------------------------------------
+-- 3bis. STORAGE — photos produits
+-- ----------------------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('products', 'products', true)
+on conflict (id) do nothing;
+
+create policy "products: lecture publique"
+  on storage.objects for select
+  to public
+  using (bucket_id = 'products');
+
+create policy "products: upload par le propriétaire"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'products'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "products: remplacement par le propriétaire"
+  on storage.objects for update
+  to authenticated
+  using (
+    bucket_id = 'products'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "products: suppression par le propriétaire"
+  on storage.objects for delete
+  to authenticated
+  using (
+    bucket_id = 'products'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+
+-- ----------------------------------------------------------------------------
 -- 4. LIVREURS (statut + position temps réel)
 -- ----------------------------------------------------------------------------
 create table public.livreurs_info (

@@ -222,12 +222,27 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
           className="h-32 w-full object-cover sm:h-48"
         />
       )}
-      <div className="border-b border-line bg-white px-5 py-8 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent-tint)]">
-          <span className="font-display text-lg font-bold text-[var(--accent-dark)]">
-            {commerce!.nom_boutique.slice(0, 2).toUpperCase()}
-          </span>
-        </div>
+      <div
+        className="border-b-2 px-5 py-8 text-center"
+        style={{
+          borderColor: "var(--accent)",
+          background: `linear-gradient(180deg, var(--accent-tint) 0%, #ffffff 100%)`,
+        }}
+      >
+        {commerce!.logo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={commerce!.logo_url}
+            alt={commerce!.nom_boutique}
+            className="mx-auto h-16 w-16 rounded-2xl border-2 border-white object-cover shadow-card"
+          />
+        ) : (
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent)] shadow-card">
+            <span className="font-display text-lg font-bold text-white">
+              {commerce!.nom_boutique.slice(0, 2).toUpperCase()}
+            </span>
+          </div>
+        )}
         <h1 className="mt-3 font-display text-xl font-bold text-ink">{commerce!.nom_boutique}</h1>
         {commerce!.description && <p className="mt-1 text-sm text-ink/60">{commerce!.description}</p>}
         {commerce!.adresse && <p className="mt-1 text-xs text-ink/40">{commerce!.adresse}</p>}
@@ -238,13 +253,25 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
 
       {/* Catalogue */}
       <div className="mx-auto max-w-2xl px-5 py-6">
+        {produits.length > 0 && (
+          <div className="mb-4 flex items-center gap-2">
+            <span className="h-4 w-1 rounded-full bg-[var(--accent)]" />
+            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink/70">
+              Nos produits
+            </h2>
+          </div>
+        )}
         {produits.length === 0 ? (
           <p className="text-center text-sm text-ink/50">Catalogue vide pour l&apos;instant.</p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {produits.map((p) => (
-              <div key={p.id} className="card overflow-hidden">
-                <div className="h-32 bg-mist">
+              <div
+                key={p.id}
+                className="card overflow-hidden border-t-2"
+                style={{ borderTopColor: "var(--accent)" }}
+              >
+                <div className="h-32 bg-[var(--accent-tint)]">
                   {p.image_url && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={p.image_url} alt={p.nom} className="h-full w-full object-cover" />
@@ -293,7 +320,8 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
       {nombreArticles > 0 && !panierOuvert && (
         <button
           onClick={() => setPanierOuvert(true)}
-          className="fixed inset-x-5 bottom-5 flex items-center justify-between rounded-2xl bg-ink px-5 py-4 text-white shadow-card"
+          className="fixed inset-x-5 bottom-5 flex items-center justify-between rounded-2xl px-5 py-4 text-white shadow-card"
+          style={{ backgroundColor: "var(--accent-dark)" }}
         >
           <span className="text-sm font-semibold">{nombreArticles} article{nombreArticles > 1 ? "s" : ""}</span>
           <span className="font-display font-bold">{total.toLocaleString("fr-FR")} F — Commander →</span>
@@ -322,12 +350,12 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
             <form onSubmit={validerCommande} className="mt-5 space-y-4">
               <div>
                 <label className="label">Ton nom</label>
-                <input className="input" value={nomClient} onChange={(e) => setNomClient(e.target.value)} required />
+                <input className="input focus:!border-[var(--accent)]" value={nomClient} onChange={(e) => setNomClient(e.target.value)} required />
               </div>
               <div>
                 <label className="label">Téléphone</label>
                 <input
-                  className="input"
+                  className="input focus:!border-[var(--accent)]"
                   value={telephone}
                   onChange={(e) => setTelephone(e.target.value)}
                   required
@@ -337,7 +365,7 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
               <div>
                 <label className="label">Repère / quartier</label>
                 <input
-                  className="input"
+                  className="input focus:!border-[var(--accent)]"
                   value={adresseTexte}
                   onChange={(e) => setAdresseTexte(e.target.value)}
                   placeholder="Ex. Près du marché de Dioulassoba"
