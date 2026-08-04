@@ -82,6 +82,21 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
     return () => clearInterval(intervalle);
   }, [commandeEnvoyee?.id]);
 
+  // Avertir avant de quitter/rafraîchir la page pendant le suivi d'une commande active
+  useEffect(() => {
+    if (!commandeEnvoyee) return;
+    const enCours = commandeEnvoyee.statut === "assignee" || commandeEnvoyee.statut === "en_livraison";
+    if (!enCours) return;
+
+    const avantFermeture = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "Tu vas perdre le suivi de ta commande si tu quittes cette page.";
+      return e.returnValue;
+    };
+    window.addEventListener("beforeunload", avantFermeture);
+    return () => window.removeEventListener("beforeunload", avantFermeture);
+  }, [commandeEnvoyee?.statut]);
+
   function ajouterAuPanier(p: Produit) {
     setPanier((old) => {
       const existant = old[p.id];
