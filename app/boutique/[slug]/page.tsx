@@ -197,6 +197,9 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
                 livreur={positionLivreur}
                 destination={{ lat: commandeEnvoyee.lat, lng: commandeEnvoyee.lng }}
               />
+              <p className="mt-2 text-center text-xs text-danger">
+                ⚠️ Ne rafraîchis pas et ne ferme pas cette page : tu perdrais le suivi de ta commande.
+              </p>
             </div>
           )}
 
