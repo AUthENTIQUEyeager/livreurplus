@@ -20,6 +20,17 @@ export default function LivreurPage() {
   const [courseEnCours, setCourseEnCours] = useState<Commande | null>(null);
   const [chargement, setChargement] = useState(true);
   const [erreurGeoloc, setErreurGeoloc] = useState<string | null>(null);
+  // Delivery confirmation states
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [enteredPin, setEnteredPin] = useState("");
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [confirmationLoading, setConfirmationLoading] = useState(false);
+  const [confirmationError, setConfirmationError] = useState<string | null>(null);
+
+  if (chargement) {
+    return <p className="p-6 text-sm text-ink/50">Chargement…</p>;
+  }
 
   const derniereEcriture = useRef(0);
 
@@ -121,13 +132,89 @@ export default function LivreurPage() {
     chargerTout();
   }
 
+  async function confirmerLivraison() {
+    // Validate PIN
+    if (!courseEnCours || !courseEnCours.qr_pin || enteredPin !== courseEnCours.qr_pin) {
+      setConfirmationError("PIN incorrect. Veuillez vérifier le code affiché sur l'application du client.");
+      return;
+    }
+
+    // Validate photo
+    if (!photoFile) {
+      setConfirmationError("Veuillez prendre une photo du colis livré.");
+      return;
+    }
+
+    setConfirmationLoading(true);
+    setConfirmationError(null);
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Utilisateur non authentifié");
+
+      // Upload photo to Supabase Storage
+      const fileExt = photoFile.name.split('.').pop() || 'jpg';
+      const fileName = `delivery-proofs/${courseEnCours.id}/${user.id}/${Date.now()}_${Math.random()
+        .toString(36)
+        .substring(2, 9)}.${fileExt}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('delivery-proofs')
+        .upload(fileName, photoFile);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL for the photo (optional, we can store just the path)
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('delivery-proofs').getPublicUrl(fileName);
+
+      // Insert delivery proof
+      const { data, error: dbError } = await supabase
+        .from('delivery_proofs')
+        .insert({
+          ordre_id: courseEnCours.id,
+          livreur_id: user.id,
+          qr_code_data: courseEnCours.qr_code_data || '',
+          qr_scanned_at: new Date().toISOString(),
+          confirmation_photo_path: fileName,
+          confirmation_photo_taken_at: new Date().toISOString(),
+          status: 'pending' // Will be validated by commerçant or admin
+        });
+
+      if (dbError) throw dbError;
+
+      // Update commande status to en_livraison (now in delivery process with proof)
+      await supabase.from("commandes").update({ statut: "en_livraison" }).eq("id", courseEnCours.id);
+
+      // Close modal and reset form
+      setShowConfirmationModal(false);
+      setEnteredPin("");
+      setPhotoPreview(null);
+      setPhotoFile(null);
+      setConfirmationLoading(false);
+
+      // Update status to en_course (actively delivering)
+      await changerStatut("en_course");
+      chargerTout();
+    } catch (error) {
+      console.error('Error confirming delivery:', error);
+      setConfirmationLoading(false);
+      setConfirmationError("Erreur lors de la confirmation de livraison. Veuillez réessayer.");
+    }
+  }
+
   async function terminerLivraison() {
     if (!courseEnCours) return;
-    if (!confirm("Confirmer la livraison auprès du client ?")) return;
-    await supabase.from("commandes").update({ statut: "livree" }).eq("id", courseEnCours.id);
-    await changerStatut("disponible");
-    setCourseEnCours(null);
-    chargerTout();
+    // Instead of directly marking as delivered, open confirmation modal
+    setShowConfirmationModal(true);
+    // Reset form when opening modal
+    setEnteredPin("");
+    setPhotoPreview(null);
+    setPhotoFile(null);
+    setConfirmationError(null);
   }
 
   async function deconnexion() {
@@ -136,8 +223,7 @@ export default function LivreurPage() {
     router.refresh();
   }
 
-  if (chargement) return <p className="p-6 text-sm text-ink/50">Chargement…</p>;
-
+  
   return (
     <div className="mx-auto max-w-md pb-10">
       <header className="flex items-center justify-between bg-white px-5 py-4">
@@ -223,7 +309,7 @@ export default function LivreurPage() {
                   </button>
                 ) : (
                   <button onClick={terminerLivraison} className="btn-primary flex-1 !py-2.5 text-xs">
-                    Marquer comme livrée
+                    Confirmer la livraison
                   </button>
                 )}
               </div>
@@ -239,6 +325,90 @@ export default function LivreurPage() {
           </div>
         )}
       </div>
+
+      {/* Delivery Confirmation Modal */}
+      {showConfirmationModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="font-display text-xl font-bold text-ink mb-4">Confirmer la livraison</h2>
+
+            {/* PIN Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-ink mb-2">Code PIN de validation (4 chiffres)</label>
+              <input
+                type="password"
+                value={enteredPin}
+                onChange={(e) => setEnteredPin(e.target.value)}
+                autoFocus
+                className="w-full px-3 py-2 border border-ink/20 rounded-md focus:outline-none focus:ring-2 focus:ring-route"
+                maxLength="4"
+                placeholder="1234"
+              />
+              {confirmationError && (
+                <p className="mt-2 text-sm text-amber">{confirmationError}</p>
+              )}
+            </div>
+
+            {/* Photo Capture */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-ink mb-2">Photo du colis livré</label>
+              <div className="border-2 border-dashed border-ink/20 rounded-md p-4 text-center cursor-pointer"
+                onClick={() => document.getElementById('photo-input')?.click()}
+              >
+                {photoPreview ? (
+                  <img src={photoPreview} alt="Preview" className="max-w-full h-48 object-contain rounded-md" />
+                ) : (
+                  <>
+                    <p className="text-sm text-ink/60">Cliquez pour prendre une photo</p>
+                    <p className="text-xs text-ink/40">La photo prouvera que vous avez bien livré le colis</p>
+                  </>
+                )}
+              </div>
+              <input
+                type="file"
+                id="photo-input"
+                accept="image/*"
+                capture="environment"
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setPhotoFile(file);
+                    // Create preview URL
+                    setPhotoPreview(URL.createObjectURL(file));
+                  }
+                }}
+              />
+              {!photoFile && (
+                <p className="mt-2 text-sm text-amber">Veuillez prendre une photo du colis livré</p>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowConfirmationModal(false);
+                  setEnteredPin("");
+                  setPhotoPreview(null);
+                  setPhotoFile(null);
+                  setConfirmationError(null);
+                }}
+                className="btn-secondary flex-1 !py-2.5 text-xs"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={confirmerLivraison}
+                disabled={confirmationLoading || !enteredPin || !photoFile}
+                className={`btn-primary flex-1 !py-2.5 text-xs ${confirmationLoading || !enteredPin || !photoFile ? 'opacity-50' : ''}`}
+              >
+                {confirmationLoading ? 'Confirmation...' : 'Confirmer la livraison'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

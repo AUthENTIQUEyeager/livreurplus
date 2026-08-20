@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import type { Commande, CommandeItem, Commerce, LivreurProche } from "@/lib/types";
+import type { Commande, CommandeItem, Commerce, LivreurProche, DeliveryProof } from "@/lib/types";
 import StatusBadge from "@/components/StatusBadge";
 
 const LiveMap = dynamic(() => import("@/components/LiveMap"), { ssr: false });
 
 export default function CommandesPage() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const [commerce, setCommerce] = useState<Commerce | null>(null);
   const [commandes, setCommandes] = useState<Commande[]>([]);
   const [chargement, setChargement] = useState(true);
@@ -18,8 +19,13 @@ export default function CommandesPage() {
   const [candidats, setCandidats] = useState<LivreurProche[]>([]);
   const [rechercheEnCours, setRechercheEnCours] = useState(false);
   const [positionLivreur, setPositionLivreur] = useState<{ lat: number; lng: number } | null>(null);
+  // Delivery proof states
+  const [deliveryProof, setDeliveryProof] = useState<DeliveryProof | null>(null);
+  const [proofLoading, setProofLoading] = useState(false);
+  const [proofError, setProofError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  async function charger() {
+  const charger = useCallback(async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -39,19 +45,28 @@ export default function CommandesPage() {
       setCommandes(cmds ?? []);
     }
     setChargement(false);
-  }
+  }, [supabase]);
 
   useEffect(() => {
     charger();
     // Rafraîchissement simple par polling — suffisant pour un tableau de commandes
     const intervalle = setInterval(charger, 15000);
     return () => clearInterval(intervalle);
-  }, []);
+  }, [charger]);
+
+  // Le return conditionnel vient APRÈS tous les hooks (Rules of Hooks)
+  if (chargement) {
+    return <p className="text-sm text-ink/50">Chargement…</p>;
+  }
 
   async function ouvrirCommande(c: Commande) {
     setOuverte(c);
     setCandidats([]);
     setPositionLivreur(null);
+    setDeliveryProof(null);
+    setProofLoading(false);
+    setProofError(null);
+    setValidationError(null);
     const { data: lignes } = await supabase
       .from("commande_items")
       .select("*")
@@ -65,6 +80,24 @@ export default function CommandesPage() {
         .eq("profile_id", c.livreur_id)
         .maybeSingle();
       if (info?.lat && info?.lng) setPositionLivreur({ lat: info.lat, lng: info.lng });
+
+      // Fetch delivery proof if exists
+      setProofLoading(true);
+      const { data: proofData, error: proofFetchError } = await supabase
+        .from("delivery_proofs")
+        .select("*")
+        .eq("ordre_id", c.id)
+        .eq("livreur_id", c.livreur_id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+      setProofLoading(false);
+
+      if (proofFetchError) {
+        setProofError("Impossible de charger la preuve de livraison.");
+      } else if (proofData) {
+        setDeliveryProof(proofData);
+      }
     }
   }
 
@@ -98,7 +131,71 @@ export default function CommandesPage() {
     setOuverte(null);
   }
 
-  if (chargement) return <p className="text-sm text-ink/50">Chargement…</p>;
+  async function validerLivraison() {
+    if (!deliveryProof) {
+      setValidationError("Aucune preuve de livraison à valider");
+      return;
+    }
+
+    setValidationError(null);
+    try {
+      // Update delivery proof status to validated
+      const { error } = await supabase
+        .from("delivery_proofs")
+        .update({
+          status: "validated",
+          validated_at: new Date().toISOString(),
+          validated_by: (await supabase.auth.getUser()).data.user?.id,
+        })
+        .eq("id", deliveryProof.id);
+
+      if (error) throw error;
+
+      // Update commande status to livree
+      await supabase
+        .from("commandes")
+        .update({ statut: "livree" })
+        .eq("id", ouverte!.id);
+
+      // Close the modal and refresh
+      setOuverte(null);
+      await charger();
+    } catch (error) {
+      console.error("Error validating delivery:", error);
+      setValidationError("Erreur lors de la validation. Veuillez réessayer.");
+    }
+  }
+
+  async function rejeterLivraison(reason: string) {
+    if (!deliveryProof) {
+      setValidationError("Aucune preuve de livraison à rejeter");
+      return;
+    }
+
+    setValidationError(null);
+    try {
+      // Update delivery proof status to rejected
+      const { error } = await supabase
+        .from("delivery_proofs")
+        .update({
+          status: "rejected",
+          rejection_reason: reason,
+          validated_at: new Date().toISOString(),
+          validated_by: (await supabase.auth.getUser()).data.user?.id,
+        })
+        .eq("id", deliveryProof.id);
+
+      if (error) throw error;
+
+      // Optionally: notify livreur or reset commande status
+      // For now, just close modal
+      setOuverte(null);
+      await charger();
+    } catch (error) {
+      console.error("Error rejecting delivery:", error);
+      setValidationError("Erreur lors du rejet. Veuillez réessayer.");
+    }
+  }
 
   return (
     <div>
@@ -177,6 +274,114 @@ export default function CommandesPage() {
                   livreur={positionLivreur}
                   destination={{ lat: ouverte.lat, lng: ouverte.lng }}
                 />
+              </div>
+            )}
+
+            {ouverte.statut === "en_livraison" && deliveryProof && (
+              <div className="mt-6">
+                <p className="label">Preuve de livraison</p>
+
+                {proofLoading ? (
+                  <p className="text-sm text-ink/60">Chargement de la preuve...</p>
+                ) : (
+                  <>
+                    {proofError && (
+                      <p className="mb-3 rounded-lg bg-amber-tint px-3 py-2 text-xs text-amber">{proofError}</p>
+                    )}
+
+                    <div className="space-y-4">
+                      <div className="rounded-lg border p-4">
+                        <p className="font-medium text-ink">Photo de confirmation</p>
+                        {deliveryProof.confirmation_photo_path ? (
+                          <div className="mt-3">
+                            <Image
+                              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/delivery-proofs/${deliveryProof.confirmation_photo_path}`}
+                              alt="Preuve de livraison"
+                              width={640}
+                              height={256}
+                              unoptimized
+                              className="h-64 max-w-full rounded-lg border border-line object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <p className="text-center text-sm text-ink/60">Photo non disponible</p>
+                        )}
+                      </div>
+
+                      <div className="grid gap-2 text-sm">
+                        <div>
+                          <span className="font-medium text-ink">QR Code scanné :</span>
+                          <span className="ml-2 text-ink/60">{deliveryProof.qr_code_data}</span>
+                        </div>
+                        <div>
+                          <span className="font-medium text-ink">Heure du scan :</span>
+                          <span className="ml-2 text-ink/60">{new Date(deliveryProof.qr_scanned_at).toLocaleString("fr-FR")}</span>
+                        </div>
+                        <div>
+                          <span className="font-medium text-ink">Statut :</span>
+                          <span
+                            className={`ml-2 text-ink/60 ${
+                              deliveryProof.status === "pending"
+                                ? "text-amber"
+                                : deliveryProof.status === "validated"
+                                  ? "text-green"
+                                  : deliveryProof.status === "rejected"
+                                    ? "text-red"
+                                    : ""
+                            }`}
+                          >
+                            {deliveryProof.status === "pending"
+                              ? "En attente de validation"
+                              : deliveryProof.status === "validated"
+                                ? "Validée"
+                                : deliveryProof.status === "rejected"
+                                  ? "Rejetée"
+                                  : ""}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                <div className="mt-5">
+                  {validationError && <p className="mb-2 text-sm text-amber">{validationError}</p>}
+
+                  {!validationError && deliveryProof.status === "pending" && (
+                    <>
+                      <p className="mb-2 text-sm text-ink/60">
+                        Vérifiez que la photo correspond bien à la livraison effectuée.
+                      </p>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => validerLivraison()}
+                          className="btn-primary flex-1 !py-2.5 text-xs"
+                        >
+                          Valider la livraison
+                        </button>
+                        <button
+                          onClick={() => {
+                            const reason = prompt("Pourquoi rejeter cette preuve de livraison ?");
+                            if (reason !== null && reason.trim() !== "") {
+                              rejeterLivraison(reason.trim());
+                            }
+                          }}
+                          className="btn-secondary flex-1 !py-2.5 text-xs"
+                        >
+                          Rejeter
+                        </button>
+                      </div>
+                    </>
+                  )}
+
+                  {!validationError && deliveryProof.status !== "pending" && (
+                    <p className="text-sm text-ink/60">
+                      {deliveryProof.status === "validated"
+                        ? "Livraison validée et marquée comme livrée."
+                        : "Livraison rejetée."}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
 

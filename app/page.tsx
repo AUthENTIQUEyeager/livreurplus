@@ -9,23 +9,14 @@ export default async function Home() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    const { data: profil, error } = await supabase
+    const { data: profil } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", user.id)
       .single();
 
-    console.error(
-      "[page /] Session détectée —",
-      "user:", user.email, `(id: ${user.id})`,
-      "| rôle lu:", profil?.role ?? "aucun profil trouvé",
-      "| erreur requête:", error?.message ?? "aucune"
-    );
-
     if (profil?.role === "commercant") redirect("/commercant/dashboard");
     if (profil?.role === "livreur") redirect("/livreur");
-  } else {
-    console.error("[page /] Aucune session détectée (utilisateur non connecté côté serveur)");
   }
 
   return (
