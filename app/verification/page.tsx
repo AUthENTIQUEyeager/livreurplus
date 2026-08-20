@@ -198,7 +198,7 @@ export default function VerificationPage() {
             <span className="font-display text-sm font-bold text-white">L+</span>
           </div>
           <h2 className="mt-4 font-display text-xl font-bold text-ink">
-            Vérification d'identité
+            Vérification d&apos;identité
           </h2>
           <p className="mt-2 text-sm text-ink/60">
             Chargement de vos informations&hellip;
@@ -245,7 +245,7 @@ export default function VerificationPage() {
           <span className="font-display text-lg font-bold text-ink">LivreurPlus</span>
         </div>
         <Link href="/" className="btn-secondary">
-          Retour à l'accueil
+          Retour à l&apos;accueil
         </Link>
       </nav>
 
