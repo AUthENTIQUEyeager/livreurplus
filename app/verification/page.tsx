@@ -497,7 +497,7 @@ export default function VerificationPage() {
             </h2>
             <ul className="space-y-2 text-sm text-route-dark/80 list-disc pl-5">
               <li>
-                La vérification d'identité est obligatoire pour recevoir des commandes
+                La vérification d&apos;identité est obligatoire pour recevoir des commandes
                 (pour les commerçants) ou effectuer des livraisons (pour les livreurs).
               </li>
               <li>
@@ -508,10 +508,10 @@ export default function VerificationPage() {
               </li>
               <li>
                 En cas de problème avec vos documents, vous serez notifié par email ou
-                notification dans l'application.
+                notification dans l&apos;application.
               </li>
               <li>
-                Pour toute question, contactez le support via l'aide dans l'application.
+                Pour toute question, contactez le support via l&apos;aide dans l&apos;application.
               </li>
             </ul>
           </div>
