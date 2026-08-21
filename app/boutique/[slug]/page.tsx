@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase/client";
 import type { Commande, Commerce, Produit } from "@/lib/types";
 import StatusBadge from "@/components/StatusBadge";
+import QRCodeDisplay from "@/components/QRCodeDisplay";
 import { getTheme } from "@/lib/theme-presets";
 
 const LiveMap = dynamic(() => import("@/components/LiveMap"), { ssr: false });
@@ -81,21 +82,6 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
     }, 6000);
     return () => clearInterval(intervalle);
   }, [commandeEnvoyee?.id]);
-
-  // Avertir avant de quitter/rafraîchir la page pendant le suivi d'une commande active
-  useEffect(() => {
-    if (!commandeEnvoyee) return;
-    const enCours = commandeEnvoyee.statut === "assignee" || commandeEnvoyee.statut === "en_livraison";
-    if (!enCours) return;
-
-    const avantFermeture = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = "Tu vas perdre le suivi de ta commande si tu quittes cette page.";
-      return e.returnValue;
-    };
-    window.addEventListener("beforeunload", avantFermeture);
-    return () => window.removeEventListener("beforeunload", avantFermeture);
-  }, [commandeEnvoyee?.statut]);
 
   function ajouterAuPanier(p: Produit) {
     setPanier((old) => {
@@ -206,15 +192,23 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
             {commandeEnvoyee.statut === "annulee" && "Cette commande a été annulée."}
           </p>
 
+          {commandeEnvoyee.qr_code_data &&
+            commandeEnvoyee.statut !== "livree" &&
+            commandeEnvoyee.statut !== "annulee" && (
+              <div className="mt-4 flex flex-col items-center gap-2 rounded-xl bg-mist p-4">
+                <p className="text-center text-xs text-ink/60">
+                  Montre ce QR code au livreur à la réception de ta commande
+                </p>
+                <QRCodeDisplay data={commandeEnvoyee.qr_code_data} size={180} />
+              </div>
+            )}
+
           {(commandeEnvoyee.statut === "assignee" || commandeEnvoyee.statut === "en_livraison") && (
             <div className="mt-4">
               <LiveMap
                 livreur={positionLivreur}
                 destination={{ lat: commandeEnvoyee.lat, lng: commandeEnvoyee.lng }}
               />
-              <p className="mt-2 text-center text-xs text-danger">
-                ⚠️ Ne rafraîchis pas et ne ferme pas cette page : tu perdrais le suivi de ta commande.
-              </p>
             </div>
           )}
 

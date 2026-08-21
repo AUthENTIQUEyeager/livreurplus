@@ -8,6 +8,7 @@ import type { Commande, StatutLivreur } from "@/lib/types";
 import StatusBadge from "@/components/StatusBadge";
 
 const LiveMap = dynamic(() => import("@/components/LiveMap"), { ssr: false });
+const QRScanner = dynamic(() => import("@/components/QRScanner"), { ssr: false });
 
 export default function LivreurPage() {
   const supabase = createClient();
@@ -22,6 +23,7 @@ export default function LivreurPage() {
   const [erreurGeoloc, setErreurGeoloc] = useState<string | null>(null);
   // Delivery confirmation states
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const [enteredPin, setEnteredPin] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -126,6 +128,26 @@ export default function LivreurPage() {
     await supabase.from("commandes").update({ statut: "en_livraison" }).eq("id", courseEnCours.id);
     await changerStatut("en_course");
     chargerTout();
+  }
+
+  function gererScanQR(texteScanne: string) {
+    setShowScanner(false);
+
+    // Format attendu : "LIVREURPLUS:<id_commande>:<pin>"
+    const parties = texteScanne.split(":");
+    if (parties.length !== 3 || parties[0] !== "LIVREURPLUS") {
+      setConfirmationError("QR code non reconnu. Réessaie ou tape le PIN manuellement.");
+      return;
+    }
+
+    const [, idScanne, pinScanne] = parties;
+    if (!courseEnCours || idScanne !== courseEnCours.id) {
+      setConfirmationError("Ce QR code ne correspond pas à la commande en cours.");
+      return;
+    }
+
+    setConfirmationError(null);
+    setEnteredPin(pinScanne);
   }
 
   async function confirmerLivraison() {
@@ -334,7 +356,16 @@ export default function LivreurPage() {
 
             {/* PIN Input */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-ink mb-2">Code PIN de validation (4 chiffres)</label>
+              <div className="mb-2 flex items-center justify-between">
+                <label className="block text-sm font-medium text-ink">Code PIN de validation (4 chiffres)</label>
+                <button
+                  type="button"
+                  onClick={() => setShowScanner(true)}
+                  className="text-xs font-medium text-route underline"
+                >
+                  Scanner le QR à la place
+                </button>
+              </div>
               <input
                 type="password"
                 value={enteredPin}
@@ -348,6 +379,10 @@ export default function LivreurPage() {
                 <p className="mt-2 text-sm text-amber">{confirmationError}</p>
               )}
             </div>
+
+            {showScanner && (
+              <QRScanner onScan={gererScanQR} onClose={() => setShowScanner(false)} />
+            )}
 
             {/* Photo Capture */}
             <div className="mb-4">
