@@ -28,10 +28,6 @@ export default function LivreurPage() {
   const [confirmationLoading, setConfirmationLoading] = useState(false);
   const [confirmationError, setConfirmationError] = useState<string | null>(null);
 
-  if (chargement) {
-    return <p className="p-6 text-sm text-ink/50">Chargement…</p>;
-  }
-
   const derniereEcriture = useRef(0);
 
   async function chargerTout() {
@@ -215,6 +211,10 @@ export default function LivreurPage() {
     setPhotoPreview(null);
     setPhotoFile(null);
     setConfirmationError(null);
+  }
+
+  if (chargement) {
+    return <p className="p-6 text-sm text-ink/50">Chargement…</p>;
   }
 
   async function deconnexion() {
