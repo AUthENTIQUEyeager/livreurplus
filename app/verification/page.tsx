@@ -81,7 +81,8 @@ export default function VerificationPage() {
         "postgres_changes",
         { event: "*", schema: "public", table: "user_verification_documents" },
         (payload) => {
-          if (payload.new?.user_id === profile?.id) {
+          const newDocument = payload.new as { user_id?: string };
+          if (newDocument.user_id === profile?.id) {
             loadProfileAndDocuments(); // Refresh data
           }
         }
