@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     const path = request.nextUrl.pathname;
-    const protectedPaths = ["/commercant", "/livreur"];
+    const protectedPaths = ["/commercant", "/livreur", "/admin"];
     const isProtected = protectedPaths.some((p) => path.startsWith(p));
 
     if (isProtected && !user) {
@@ -47,6 +47,20 @@ export async function updateSession(request: NextRequest) {
       url.pathname = "/login";
       url.searchParams.set("next", path);
       return NextResponse.redirect(url);
+    }
+
+    if (isProtected && user) {
+      const { data: profil } = await supabase
+        .from("profiles")
+        .select("est_bloque")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profil?.est_bloque) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/compte-bloque";
+        return NextResponse.redirect(url);
+      }
     }
 
     return response;

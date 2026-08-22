@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Commande, Commerce, Produit } from "@/lib/types";
 import StatusBadge from "@/components/StatusBadge";
@@ -14,6 +15,7 @@ type LignePanier = { produit: Produit; quantite: number };
 
 export default function BoutiquePage({ params }: { params: { slug: string } }) {
   const supabase = createClient();
+  const searchParams = useSearchParams();
   const [commerce, setCommerce] = useState<Commerce | null>(null);
   const [produits, setProduits] = useState<Produit[]>([]);
   const [chargement, setChargement] = useState(true);
@@ -59,6 +61,22 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
       setChargement(false);
     })();
   }, [params.slug]);
+
+  // Restaure la commande depuis l'URL (?commande=id) au chargement/rafraîchissement,
+  // pour que la page de suivi ne disparaisse plus jamais quand on recharge.
+  useEffect(() => {
+    const idCommande = searchParams.get("commande");
+    if (!idCommande) return;
+    (async () => {
+      const { data: cmd } = await supabase
+        .from("commandes")
+        .select("*")
+        .eq("id", idCommande)
+        .maybeSingle();
+      if (cmd) setCommandeEnvoyee(cmd);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   // Suivi live de la commande une fois passée
   useEffect(() => {
@@ -160,6 +178,9 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
     setPanier({});
     setPanierOuvert(false);
     setCommandeEnvoyee(commande);
+    // Rend la page de suivi persistante : un rafraîchissement retombera sur
+    // cette même commande grâce à l'effet qui lit ?commande= au chargement.
+    window.history.replaceState(null, "", `?commande=${commande.id}`);
   }
 
   if (chargement) return <p className="p-6 text-center text-sm text-ink/50">Chargement…</p>;
@@ -200,6 +221,11 @@ export default function BoutiquePage({ params }: { params: { slug: string } }) {
                   Montre ce QR code au livreur à la réception de ta commande
                 </p>
                 <QRCodeDisplay data={commandeEnvoyee.qr_code_data} size={180} />
+                {commandeEnvoyee.qr_pin && (
+                  <p className="text-center text-sm text-ink/70">
+                    Ou donne-lui ce code : <span className="font-display text-lg font-bold text-ink tracking-widest">{commandeEnvoyee.qr_pin}</span>
+                  </p>
+                )}
               </div>
             )}
 

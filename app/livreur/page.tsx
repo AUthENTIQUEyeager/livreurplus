@@ -220,7 +220,8 @@ export default function LivreurPage() {
     } catch (error) {
       console.error('Error confirming delivery:', error);
       setConfirmationLoading(false);
-      setConfirmationError("Erreur lors de la confirmation de livraison. Veuillez réessayer.");
+      const message = error instanceof Error ? error.message : "Erreur inconnue";
+      setConfirmationError(`Erreur lors de la confirmation : ${message}`);
     }
   }
 
@@ -350,7 +351,7 @@ export default function LivreurPage() {
 
       {/* Delivery Confirmation Modal */}
       {showConfirmationModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h2 className="font-display text-xl font-bold text-ink mb-4">Confirmer la livraison</h2>
 

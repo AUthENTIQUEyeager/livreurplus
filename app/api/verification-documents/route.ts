@@ -9,10 +9,19 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data, error } = await supabase
-      .from('user_verification_documents')
-      .select('*')
-      .eq('user_id', user.id)
+    const { searchParams } = new URL(request.url)
+    const voirTout = searchParams.get('all') === 'true'
+
+    let query = supabase.from('user_verification_documents').select('*')
+
+    if (voirTout) {
+      // RLS bloquera automatiquement cette requête si l'appelant n'est pas admin
+      query = query.eq('verified', false)
+    } else {
+      query = query.eq('user_id', user.id)
+    }
+
+    const { data, error } = await query
 
     if (error) throw error
 
@@ -111,15 +120,15 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is a commerçant (or admin in future)
+    // Check if user is admin
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, is_admin')
       .eq('id', user.id)
       .single()
 
     if (profileError) throw profileError
-    if (profile?.role !== 'commercant') {
+    if (!profile?.is_admin) {
       return NextResponse.json(
         { error: 'Forbidden: insufficient permissions' },
         { status: 403 }
@@ -152,11 +161,12 @@ export async function PATCH(request: Request) {
     if (error) throw error
 
     // If all required documents are verified, update profile verification status
-    if (verified) {
+    // (utilise l'id du PROPRIÉTAIRE du document, pas celui de l'admin qui valide)
+    if (verified && data?.user_id) {
       const { count } = await supabase
         .from('user_verification_documents')
         .select('id', { count: 'exact' })
-        .eq('user_id', user.id)
+        .eq('user_id', data.user_id)
         .eq('verified', false)
 
       // If no unverified documents left, mark profile as verified
@@ -167,7 +177,7 @@ export async function PATCH(request: Request) {
             is_identity_verified: true,
             verification_approved_at: new Date().toISOString(),
           })
-          .eq('id', user.id)
+          .eq('id', data.user_id)
       }
     }
 

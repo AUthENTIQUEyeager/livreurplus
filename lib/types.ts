@@ -32,6 +32,8 @@ export interface Profile {
   verification_submitted_at?: string;
   verification_approved_at?: string;
   verification_reason?: string | null;
+  is_admin?: boolean;
+  est_bloque?: boolean;
 }
 
 export interface Commerce {

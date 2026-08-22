@@ -44,7 +44,7 @@ export default function QRScanner({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/80 p-4">
+    <div className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-black/80 p-4">
       <div id={ELEMENT_ID} className="w-full max-w-sm overflow-hidden rounded-xl" />
       <button
         type="button"
